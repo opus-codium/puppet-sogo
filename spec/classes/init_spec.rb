@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'sogo3' do
   let(:params) do
     {
-      user_sources: user_sources
+      user_sources: user_sources,
     }
   end
   let(:user_sources) do
