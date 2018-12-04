@@ -16,19 +16,19 @@ describe 'sogo3' do
     let(:user_sources) do
       [
         {
-          'type' => 'ldap',
-          'cn_field_name' => 'cn',
-          'uid_field_name' => 'uid',
-          'base_dn' => 'CN=users,dc=domain,dc=tld',
-          'bind_dn' => 'CN=sogo,CN=users,DC=domain,DC=tld',
-          'bind_fields' => %w[sAMAccountName mail],
-          'bind_password' => 'password',
+          'type'             => 'ldap',
+          'cn_field_name'    => 'cn',
+          'uid_field_name'   => 'uid',
+          'base_dn'          => 'CN=users,dc=domain,dc=tld',
+          'bind_dn'          => 'CN=sogo,CN=users,DC=domain,DC=tld',
+          'bind_fields'      => %w[sAMAccountName mail],
+          'bind_password'    => 'password',
           'can_authenticate' => true,
-          'display_name' => 'Public',
-          'hostname' => 'ldap://127.0.0.1:389',
-          'filter' => "mail = '*'",
-          'id' => 'directory',
-          'is_address_book' => true,
+          'display_name'     => 'Public',
+          'hostname'         => 'ldap://127.0.0.1:389',
+          'filter'           => "mail = '*'",
+          'id'               => 'directory',
+          'is_address_book'  => true,
         }
       ]
     end
@@ -54,12 +54,12 @@ describe 'sogo3' do
     let(:user_sources) do
       [
         {
-          type: 'sql',
-          id: 'directory',
-          view_url: 'postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view',
-          can_authenticate: true,
-          is_address_book: true,
-          user_password_algorithm: 'md5',
+          'type'                    => 'sql',
+          'id'                      => 'directory',
+          'view_url'                => 'postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view',
+          'can_authenticate'        => true,
+          'is_address_book'         => true,
+          'user_password_algorithm' => 'md5',
         }
       ]
     end
