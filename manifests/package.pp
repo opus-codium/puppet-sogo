@@ -1,5 +1,5 @@
-class sogo3::package {
-  package { $sogo3::package:
+class sogo::package {
+  package { $sogo::package:
     ensure => installed,
   }
 }

@@ -1,5 +1,5 @@
 fixtures:
   symlinks:
-    sogo3: "#{source_dir}"
+    sogo: "#{source_dir}"
   repositories:
     stdlib: "https://github.com/puppetlabs/puppetlabs-stdlib.git"

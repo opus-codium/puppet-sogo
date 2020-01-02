@@ -16,9 +16,9 @@
    * **************************************************************************/
 
   /* Database configuration (mysql:// or postgresql://) */
-  SOGoProfileURL = "<%= $sogo3::profile_url %>";
-  OCSFolderInfoURL = "<%= $sogo3::folder_info_url %>";
-  OCSSessionsFolderURL = "<%= $sogo3::sessions_folder_url %>";
+  SOGoProfileURL = "<%= $sogo::profile_url %>";
+  OCSFolderInfoURL = "<%= $sogo::folder_info_url %>";
+  OCSSessionsFolderURL = "<%= $sogo::sessions_folder_url %>";
 
   /* Mail */
   //SOGoDraftsFolderName = Drafts;
@@ -39,7 +39,7 @@
   //SOGoFoldersSendEMailNotifications = NO;
 
   /* Authentication */
-  SOGoPasswordChangeEnabled = <%= bool2str($sogo3::password_change_enabled, 'YES', 'NO') %>;
+  SOGoPasswordChangeEnabled = <%= bool2str($sogo::password_change_enabled, 'YES', 'NO') %>;
 
   /* LDAP authentication example */
   //SOGoUserSources = (
@@ -80,7 +80,7 @@
   //);
 
   SOGoUserSources = (
-<% $sogo3::user_sources.each |$user_source| { -%>
+<% $sogo::user_sources.each |$user_source| { -%>
     {
       <%-
         $fields = {
@@ -173,9 +173,9 @@
   //SOGoTrustProxyAuthentication = NO;
 
   /* General */
-  SOGoLanguage = <%= $sogo3::language %>;
-  SOGoTimeZone = <%= $sogo3::time_zone %>;
-  SOGoLoginModule = <%= $sogo3::login_module %>;
+  SOGoLanguage = <%= $sogo::language %>;
+  SOGoTimeZone = <%= $sogo::time_zone %>;
+  SOGoLoginModule = <%= $sogo::login_module %>;
   //SOGoCalendarDefaultRoles = (
   //  PublicDAndTViewer,
   //  ConfidentialDAndTViewer

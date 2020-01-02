@@ -1,5 +1,5 @@
-class sogo3::service {
-  service { $sogo3::service:
+class sogo::service {
+  service { $sogo::service:
     ensure => running,
     enable => true,
   }

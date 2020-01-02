@@ -1,4 +1,4 @@
-type Sogo3::Usersource = Struct[
+type Sogo::Usersource = Struct[
   {
     type                    => Enum['ldap', 'sql'],
     cn_field_name           => Optional[String],

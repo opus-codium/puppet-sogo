@@ -1,9 +1,9 @@
-class sogo3 (
+class sogo (
   String                    $language = 'English',
   String                    $time_zone = 'America/Montreal',
   String                    $login_module = 'Calendar',
   Boolean                   $password_change_enabled = false,
-  Array[Sogo3::Usersource]  $user_sources = [],
+  Array[Sogo::Usersource]   $user_sources = [],
   String                    $profile_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile',
   String                    $folder_info_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info',
   String                    $sessions_folder_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder',
@@ -16,16 +16,16 @@ class sogo3 (
   String                    $service = undef,
 ) {
   if $use_custom_repo {
-    contain sogo3::repo
+    contain sogo::repo
 
-    Class['sogo3::repo']
-    -> Class['sogo3::package']
+    Class['sogo::repo']
+    -> Class['sogo::package']
   }
-  contain sogo3::package
-  contain sogo3::config
-  contain sogo3::service
+  contain sogo::package
+  contain sogo::config
+  contain sogo::service
 
-  Class['sogo3::package']
-  -> Class['sogo3::config']
-  ~> Class['sogo3::service']
+  Class['sogo::package']
+  -> Class['sogo::config']
+  ~> Class['sogo::service']
 }

@@ -1,3 +1,3 @@
-sogo3::configuration_file: '/etc/sogo/sogo.conf'
-sogo3::package: 'sogo'
-sogo3::service: 'sogo'
+sogo::configuration_file: '/etc/sogo/sogo.conf'
+sogo::package: 'sogo'
+sogo::service: 'sogo'
