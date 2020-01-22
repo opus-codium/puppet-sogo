@@ -1,3 +1,20 @@
+# @summary Manage SOGo
+#
+# @param language Default language used in the Web interface
+# @param time_zone Default time zone for users
+# @param login_module Module to show after login
+# @param password_change_enabled Allow or not users to change their passwords from SOGo
+# @param user_sources LDAP and/or SQL sources used for authentication and global address books
+# @param profile_url Database URL so that SOGo can retrieve user profiles
+# @param folder_info_url Database URL so that SOGo can retrieve the location of user folders
+# @param sessions_folder_url Database URL so that SOGo can store and retrieve secured user sessions information
+# @param use_custom_repo Manage SOGo repository
+# @param ensure_repository Ensure parameter for the SOGo repository
+# @param repository_username Username for the SOGo repository
+# @param repository_password Password for the SOGo repository
+# @param configuration_file Path to SOGo configuration file
+# @param package Package name
+# @param service Ensure parameter for the SOGo package
 class sogo (
   String                    $language = 'English',
   String                    $time_zone = 'America/Montreal',
