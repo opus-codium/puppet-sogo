@@ -29,7 +29,7 @@ describe 'sogo' do
           'filter'           => "mail = '*'",
           'id'               => 'directory',
           'is_address_book'  => true,
-        }
+        },
       ]
     end
 
@@ -60,7 +60,7 @@ describe 'sogo' do
           'can_authenticate'        => true,
           'is_address_book'         => true,
           'user_password_algorithm' => 'md5',
-        }
+        },
       ]
     end
 
