@@ -9,8 +9,8 @@ class sogo::repo {
     ensure   => $sogo::ensure_repository,
     comment  => 'Inverse repository for SOGo',
     location => $location,
-    release  => $facts['lsbdistcodename'],
-    repos    => $facts['lsbdistcodename'],
+    release  => $facts.get('os.distro.codename'),
+    repos    => $facts.get('os.distro.codename'),
     key      => {
       id     => 'FE9E84327B18FF82B0378B6719CDA6A9810273C4',
       server => 'pgp.mit.edu',
