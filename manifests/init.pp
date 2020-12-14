@@ -12,17 +12,17 @@
 # @param package Package name
 # @param service Ensure parameter for the SOGo package
 class sogo (
-  String                  $configuration_file,
-  String                  $package,
-  String                  $service,
-  String                  $language = 'English',
-  String                  $time_zone = 'America/Montreal',
-  String                  $login_module = 'Calendar',
+  String[1]               $configuration_file,
+  String[1]               $package,
+  String[1]               $service,
+  String[1]               $language = 'English',
+  String[1]               $time_zone = 'America/Montreal',
+  String[1]               $login_module = 'Calendar',
   Boolean                 $password_change_enabled = false,
   Array[Sogo::Usersource] $user_sources = [],
-  String                  $profile_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile',
-  String                  $folder_info_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info',
-  String                  $sessions_folder_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder',
+  String[1]               $profile_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile',
+  String[1]               $folder_info_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info',
+  String[1]               $sessions_folder_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder',
 ) {
   contain sogo::package
   contain sogo::config
