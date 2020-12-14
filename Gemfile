@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 
 group :test do
   gem 'facter', (ENV['FACTER_GEM_VERSION'] || '~> 2.0'),           require: false
-  gem 'github_changelog_generator',                                require: false
   gem 'metadata-json-lint',                                        require: false
   gem 'puppet-lint-classes_and_types_beginning_with_digits-check', require: false
   gem 'puppet-lint-leading_zero-check',                            require: false
@@ -16,10 +15,16 @@ group :test do
   gem 'puppet-lint-variable_contains_upcase',                      require: false
   gem 'puppet-lint-version_comparison-check',                      require: false
   gem 'puppet-strings',                                            require: false
-  gem 'puppetlabs_spec_helper',                                    require: false
   gem 'rspec-puppet-facts',                                        require: false
-  gem 'rubocop',                                                   require: false
+  gem 'voxpupuli-test'
 end
+
+group :system_tests do
+  gem 'puppet_metadata'
+end
+
+gem 'rake', :require => false
+gem 'puppetlabs_spec_helper', require: false
 
 puppetversion = ENV['PUPPET_VERSION'] || '~> 6.0'
 gem 'puppet', puppetversion
