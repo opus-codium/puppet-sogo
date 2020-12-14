@@ -8,36 +8,22 @@
 # @param profile_url Database URL so that SOGo can retrieve user profiles
 # @param folder_info_url Database URL so that SOGo can retrieve the location of user folders
 # @param sessions_folder_url Database URL so that SOGo can store and retrieve secured user sessions information
-# @param use_custom_repo Manage SOGo repository
-# @param ensure_repository Ensure parameter for the SOGo repository
-# @param repository_username Username for the SOGo repository
-# @param repository_password Password for the SOGo repository
 # @param configuration_file Path to SOGo configuration file
 # @param package Package name
 # @param service Ensure parameter for the SOGo package
 class sogo (
-  String                    $language = 'English',
-  String                    $time_zone = 'America/Montreal',
-  String                    $login_module = 'Calendar',
-  Boolean                   $password_change_enabled = false,
-  Array[Sogo::Usersource]   $user_sources = [],
-  String                    $profile_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile',
-  String                    $folder_info_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info',
-  String                    $sessions_folder_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder',
-  Boolean                   $use_custom_repo = false,
-  Enum['present', 'absent'] $ensure_repository = present,
-  Optional[String]          $repository_username = undef,
-  Optional[String]          $repository_password = undef,
-  String                    $configuration_file = undef,
-  String                    $package = undef,
-  String                    $service = undef,
+  String                  $language = 'English',
+  String                  $time_zone = 'America/Montreal',
+  String                  $login_module = 'Calendar',
+  Boolean                 $password_change_enabled = false,
+  Array[Sogo::Usersource] $user_sources = [],
+  String                  $profile_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile',
+  String                  $folder_info_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info',
+  String                  $sessions_folder_url = 'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder',
+  String                  $configuration_file = undef,
+  String                  $package = undef,
+  String                  $service = undef,
 ) {
-  if $use_custom_repo {
-    contain sogo::repo
-
-    Class['sogo::repo']
-    -> Class['sogo::package']
-  }
   contain sogo::package
   contain sogo::config
   contain sogo::service
