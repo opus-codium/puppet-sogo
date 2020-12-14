@@ -1,0 +1,34 @@
+{
+  "name": "opuscodium-sogo",
+  "version": "1.0.0",
+  "author": "Opus Codium",
+  "summary": "Installs, configures, and manages the SOGo groupware",
+  "license": "Apache-2.0",
+  "source": "https://github.com/opus-codium/puppet-sogo",
+  "project_page": "https://github.com/opus-codium/puppet-sogo",
+  "issues_url": "https://github.com/opus-codium/puppet-sogo/issues",
+  "dependencies": [
+  ],
+  "data_provider": "hiera",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "10"
+      ]
+    },
+    {
+      "operatingsystem": "FreeBSD",
+      "operatingsystemrelease": [
+        "11",
+        "12"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.0.0 < 8.0.0"
+    }
+  ]
+}
