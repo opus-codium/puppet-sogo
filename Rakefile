@@ -37,7 +37,8 @@ begin
 
   require 'puppet_blacksmith'
   Blacksmith::RakeTask.new do |t|
-    t.commit_message_pattern = "Bump version to %s"
+    t.tag_pattern = '%s'
+    t.commit_message_pattern = 'Bump version to %s'
   end
 
   # Workaround for https://github.com/github-changelog-generator/github-changelog-generator/issues/715
