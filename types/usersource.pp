@@ -1,3 +1,4 @@
+# @summary Manage a SOGo user source
 type Sogo::Usersource = Struct[
   {
     type                    => Enum['ldap', 'sql'],

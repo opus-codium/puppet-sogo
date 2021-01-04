@@ -1,3 +1,4 @@
+# @summary Manage SOGo configuration file
 class sogo::config {
   file { $sogo::configuration_file:
     ensure  => file,
