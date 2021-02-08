@@ -10,7 +10,7 @@ describe 'sogo' do
     []
   end
 
-  it { should compile.with_all_deps }
+  it { is_expected.to compile.with_all_deps }
 
   context 'ldap user source' do
     let(:user_sources) do
@@ -33,7 +33,7 @@ describe 'sogo' do
       ]
     end
 
-    it 'should produce a valid ldap user source' do
+    it 'produce a valid ldap user source' do
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *type = ldap;/)
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *CNFieldName = cn;/)
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *UIDFieldName = uid;/)
@@ -64,7 +64,7 @@ describe 'sogo' do
       ]
     end
 
-    it 'should produce a valid sql user source' do
+    it 'produce a valid sql user source' do
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *type = sql;/)
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *id = directory;/)
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *viewURL = postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view;})
