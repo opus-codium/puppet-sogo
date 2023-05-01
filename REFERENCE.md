@@ -18,7 +18,7 @@
 
 ### Data types
 
-* [`Sogo::Usersource`](#sogousersource): Manage a SOGo user source
+* [`Sogo::Usersource`](#Sogo--Usersource): Manage a SOGo user source
 
 ## Classes
 
@@ -30,19 +30,19 @@ Manage SOGo
 
 The following parameters are available in the `sogo` class:
 
-* [`language`](#language)
-* [`time_zone`](#time_zone)
-* [`login_module`](#login_module)
-* [`password_change_enabled`](#password_change_enabled)
-* [`user_sources`](#user_sources)
-* [`profile_url`](#profile_url)
-* [`folder_info_url`](#folder_info_url)
-* [`sessions_folder_url`](#sessions_folder_url)
-* [`configuration_file`](#configuration_file)
-* [`package`](#package)
-* [`service`](#service)
+* [`language`](#-sogo--language)
+* [`time_zone`](#-sogo--time_zone)
+* [`login_module`](#-sogo--login_module)
+* [`password_change_enabled`](#-sogo--password_change_enabled)
+* [`user_sources`](#-sogo--user_sources)
+* [`profile_url`](#-sogo--profile_url)
+* [`folder_info_url`](#-sogo--folder_info_url)
+* [`sessions_folder_url`](#-sogo--sessions_folder_url)
+* [`configuration_file`](#-sogo--configuration_file)
+* [`package`](#-sogo--package)
+* [`service`](#-sogo--service)
 
-##### <a name="language"></a>`language`
+##### <a name="-sogo--language"></a>`language`
 
 Data type: `String[1]`
 
@@ -50,7 +50,7 @@ Default language used in the Web interface
 
 Default value: `'English'`
 
-##### <a name="time_zone"></a>`time_zone`
+##### <a name="-sogo--time_zone"></a>`time_zone`
 
 Data type: `String[1]`
 
@@ -58,7 +58,7 @@ Default time zone for users
 
 Default value: `'America/Montreal'`
 
-##### <a name="login_module"></a>`login_module`
+##### <a name="-sogo--login_module"></a>`login_module`
 
 Data type: `String[1]`
 
@@ -66,15 +66,15 @@ Module to show after login
 
 Default value: `'Calendar'`
 
-##### <a name="password_change_enabled"></a>`password_change_enabled`
+##### <a name="-sogo--password_change_enabled"></a>`password_change_enabled`
 
 Data type: `Boolean`
 
 Allow or not users to change their passwords from SOGo
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="user_sources"></a>`user_sources`
+##### <a name="-sogo--user_sources"></a>`user_sources`
 
 Data type: `Array[Sogo::Usersource]`
 
@@ -82,7 +82,7 @@ LDAP and/or SQL sources used for authentication and global address books
 
 Default value: `[]`
 
-##### <a name="profile_url"></a>`profile_url`
+##### <a name="-sogo--profile_url"></a>`profile_url`
 
 Data type: `String[1]`
 
@@ -90,7 +90,7 @@ Database URL so that SOGo can retrieve user profiles
 
 Default value: `'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile'`
 
-##### <a name="folder_info_url"></a>`folder_info_url`
+##### <a name="-sogo--folder_info_url"></a>`folder_info_url`
 
 Data type: `String[1]`
 
@@ -98,7 +98,7 @@ Database URL so that SOGo can retrieve the location of user folders
 
 Default value: `'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info'`
 
-##### <a name="sessions_folder_url"></a>`sessions_folder_url`
+##### <a name="-sogo--sessions_folder_url"></a>`sessions_folder_url`
 
 Data type: `String[1]`
 
@@ -106,19 +106,19 @@ Database URL so that SOGo can store and retrieve secured user sessions informati
 
 Default value: `'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder'`
 
-##### <a name="configuration_file"></a>`configuration_file`
+##### <a name="-sogo--configuration_file"></a>`configuration_file`
 
 Data type: `String[1]`
 
 Path to SOGo configuration file
 
-##### <a name="package"></a>`package`
+##### <a name="-sogo--package"></a>`package`
 
 Data type: `String[1]`
 
 Package name
 
-##### <a name="service"></a>`service`
+##### <a name="-sogo--service"></a>`service`
 
 Data type: `String[1]`
 
@@ -126,7 +126,7 @@ Ensure parameter for the SOGo package
 
 ## Data types
 
-### <a name="sogousersource"></a>`Sogo::Usersource`
+### <a name="Sogo--Usersource"></a>`Sogo::Usersource`
 
 Manage a SOGo user source
 
