@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'sogo' do
@@ -34,19 +36,19 @@ describe 'sogo' do
     end
 
     it 'produce a valid ldap user source' do
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *type = ldap;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *CNFieldName = cn;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *UIDFieldName = uid;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *baseDN = "CN=users,dc=domain,dc=tld";/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *bindDN = "CN=sogo,CN=users,DC=domain,DC=tld";/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *bindFields = \(sAMAccountName, mail\);/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *bindPassword = password;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *canAuthenticate = YES;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *displayName = Public;/)
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *type = ldap;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *CNFieldName = cn;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *UIDFieldName = uid;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *baseDN = "CN=users,dc=domain,dc=tld";})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *bindDN = "CN=sogo,CN=users,DC=domain,DC=tld";})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *bindFields = \(sAMAccountName, mail\);})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *bindPassword = password;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *canAuthenticate = YES;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *displayName = Public;})
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *hostname = ldap://127.0.0.1:389;})
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *filter = "mail = '\*'";/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *id = directory;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *isAddressBook = YES;/)
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *filter = "mail = '\*'";})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *id = directory;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *isAddressBook = YES;})
     end
   end
 
@@ -65,12 +67,12 @@ describe 'sogo' do
     end
 
     it 'produce a valid sql user source' do
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *type = sql;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *id = directory;/)
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *type = sql;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *id = directory;})
       is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *viewURL = postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view;})
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *canAuthenticate = YES;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *isAddressBook = YES;/)
-      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(/^ *userPasswordAlgorithm = md5;/)
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *canAuthenticate = YES;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *isAddressBook = YES;})
+      is_expected.to contain_file('/etc/sogo/sogo.conf').with_content(%r{^ *userPasswordAlgorithm = md5;})
     end
   end
 end
