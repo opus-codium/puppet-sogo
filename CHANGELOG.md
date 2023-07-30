@@ -1,13 +1,25 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+Each new release typically also includes the latest modulesync defaults.
+These should not affect the functionality of the module.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [v4.0.0](https://github.com/opus-codium/puppet-sogo/tree/v4.0.0) (2023-07-30)
 
-## [3.1.0](https://github.com/opus-codium/puppet-sogo/tree/3.1.0) (2022-09-10)
+[Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/v3.1.0...v4.0.0)
 
-[Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/3.0.0...3.1.0)
+**Breaking changes:**
+
+- Drop Puppet 6 \(EOL\) [\#42](https://github.com/opus-codium/puppet-sogo/pull/42) ([smortex](https://github.com/smortex))
+
+**Implemented enhancements:**
+
+- Add support for Puppet 8 [\#43](https://github.com/opus-codium/puppet-sogo/pull/43) ([smortex](https://github.com/smortex))
+- Allow puppetlabs/stdlib 9.x [\#40](https://github.com/opus-codium/puppet-sogo/pull/40) ([smortex](https://github.com/smortex))
+
+## [v3.1.0](https://github.com/opus-codium/puppet-sogo/tree/v3.1.0) (2022-09-12)
+
+[Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/3.0.0...v3.1.0)
 
 **Implemented enhancements:**
 
