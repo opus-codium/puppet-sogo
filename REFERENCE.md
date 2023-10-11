@@ -16,9 +16,23 @@
 * `sogo::package`: Manage the SOGo package
 * `sogo::service`: Manage the SOGo service
 
+### Functions
+
+* [`sogo::to_plist`](#sogo--to_plist): Convert a data structure and output it in OpenStep plist format
+
 ### Data types
 
-* [`Sogo::Usersource`](#Sogo--Usersource): Manage a SOGo user source
+* [`Sogo::Calendar_role`](#Sogo--Calendar_role): Available roles for calendars
+* [`Sogo::Classification`](#Sogo--Classification): Available classifications for calendars and contacts
+* [`Sogo::Contacts_role`](#Sogo--Contacts_role): Available roles for contacts
+* [`Sogo::Domain`](#Sogo--Domain): Describe a SOGo domain
+* [`Sogo::First_week_of_year`](#Sogo--First_week_of_year): Available values for the first week of the year
+* [`Sogo::Mail_junk_settings`](#Sogo--Mail_junk_settings): Describe SOGo junk mail settings
+* [`Sogo::Refresh_view_check`](#Sogo--Refresh_view_check): Available values for refreshing views
+* [`Sogo::Reminder`](#Sogo--Reminder): Supported values for SOGo reminders
+* [`Sogo::Usersource`](#Sogo--Usersource): Describe a SOGo user source
+* [`Sogo::Usersource_ldap`](#Sogo--Usersource_ldap): Describe a SOGo LDAP user source
+* [`Sogo::Usersource_sql`](#Sogo--Usersource_sql): Describe a SOGo SQL user source
 
 ## Classes
 
@@ -41,70 +55,221 @@ The following parameters are available in the `sogo` class:
 * [`configuration_file`](#-sogo--configuration_file)
 * [`package`](#-sogo--package)
 * [`service`](#-sogo--service)
+* [`workers_count`](#-sogo--workers_count)
+* [`listen_queue_size`](#-sogo--listen_queue_size)
+* [`port`](#-sogo--port)
+* [`log_file`](#-sogo--log_file)
+* [`pid_file`](#-sogo--pid_file)
+* [`watch_dog_request_timeout`](#-sogo--watch_dog_request_timeout)
+* [`max_upload_size`](#-sogo--max_upload_size)
+* [`maximum_message_size_limit`](#-sogo--maximum_message_size_limit)
+* [`mem_limit`](#-sogo--mem_limit)
+* [`memcached_host`](#-sogo--memcached_host)
+* [`cache_cleanup_interval`](#-sogo--cache_cleanup_interval)
+* [`authentication_type`](#-sogo--authentication_type)
+* [`trust_proxy_authentication`](#-sogo--trust_proxy_authentication)
+* [`encryption_key`](#-sogo--encryption_key)
+* [`cas_service_url`](#-sogo--cas_service_url)
+* [`cas_logout_enabled`](#-sogo--cas_logout_enabled)
+* [`address_book_dav_access_enabled`](#-sogo--address_book_dav_access_enabled)
+* [`calendar_dav_access_enabled`](#-sogo--calendar_dav_access_enabled)
+* [`saml2_private_key_location`](#-sogo--saml2_private_key_location)
+* [`saml2_certificate_location`](#-sogo--saml2_certificate_location)
+* [`saml2_idp_metadata_location`](#-sogo--saml2_idp_metadata_location)
+* [`saml2_idp_public_key_location`](#-sogo--saml2_idp_public_key_location)
+* [`saml2_idp_certificate_location`](#-sogo--saml2_idp_certificate_location)
+* [`saml2_login_attribute`](#-sogo--saml2_login_attribute)
+* [`saml2_logout_enabled`](#-sogo--saml2_logout_enabled)
+* [`saml2_logout_url`](#-sogo--saml2_logout_url)
+* [`mail_domain`](#-sogo--mail_domain)
+* [`appointment_send_email_notifications`](#-sogo--appointment_send_email_notifications)
+* [`folders_send_email_notifications`](#-sogo--folders_send_email_notifications)
+* [`acls_send_email_notifications`](#-sogo--acls_send_email_notifications)
+* [`calendar_default_roles`](#-sogo--calendar_default_roles)
+* [`contacts_default_roles`](#-sogo--contacts_default_roles)
+* [`super_usernames`](#-sogo--super_usernames)
+* [`notify_on_personal_modifications`](#-sogo--notify_on_personal_modifications)
+* [`notify_on_external_modifications`](#-sogo--notify_on_external_modifications)
+* [`iphone_force_all_day_transparency`](#-sogo--iphone_force_all_day_transparency)
+* [`enable_public_access`](#-sogo--enable_public_access)
+* [`disable_sharing`](#-sogo--disable_sharing)
+* [`supported_languages`](#-sogo--supported_languages)
+* [`hide_system_email`](#-sogo--hide_system_email)
+* [`search_minimum_word_length`](#-sogo--search_minimum_word_length)
+* [`maximum_failed_login_count`](#-sogo--maximum_failed_login_count)
+* [`maximum_failed_login_interval`](#-sogo--maximum_failed_login_interval)
+* [`failed_login_block_interval`](#-sogo--failed_login_block_interval)
+* [`maximum_message_submission_count`](#-sogo--maximum_message_submission_count)
+* [`maximum_recipient_count`](#-sogo--maximum_recipient_count)
+* [`maximum_submission_interval`](#-sogo--maximum_submission_interval)
+* [`message_submission_block_interval`](#-sogo--message_submission_block_interval)
+* [`maximum_request_count`](#-sogo--maximum_request_count)
+* [`maximum_request_interval`](#-sogo--maximum_request_interval)
+* [`request_block_interval`](#-sogo--request_block_interval)
+* [`xsrf_validation_enabled`](#-sogo--xsrf_validation_enabled)
+* [`password_recovery_enabled`](#-sogo--password_recovery_enabled)
+* [`password_recovery_domains`](#-sogo--password_recovery_domains)
+* [`jwt_secret`](#-sogo--jwt_secret)
+* [`create_identities_disabled`](#-sogo--create_identities_disabled)
+* [`email_alarms_folder_url`](#-sogo--email_alarms_folder_url)
+* [`disable_organizer_event_check`](#-sogo--disable_organizer_event_check)
+* [`store_url`](#-sogo--store_url)
+* [`acl_url`](#-sogo--acl_url)
+* [`cache_folder_url`](#-sogo--cache_folder_url)
+* [`ldap_contact_info_attribute`](#-sogo--ldap_contact_info_attribute)
+* [`ldap_query_limit`](#-sogo--ldap_query_limit)
+* [`ldap_query_timeout`](#-sogo--ldap_query_timeout)
+* [`ldap_group_expansion_enabled`](#-sogo--ldap_group_expansion_enabled)
+* [`mailing_mechanism`](#-sogo--mailing_mechanism)
+* [`smtp_server`](#-sogo--smtp_server)
+* [`smtp_authentication_type`](#-sogo--smtp_authentication_type)
+* [`smtp_master_user_enabled`](#-sogo--smtp_master_user_enabled)
+* [`smtp_master_user_username`](#-sogo--smtp_master_user_username)
+* [`smtp_master_user_password`](#-sogo--smtp_master_user_password)
+* [`send_mail`](#-sogo--send_mail)
+* [`drafts_folder_name`](#-sogo--drafts_folder_name)
+* [`sent_folder_name`](#-sogo--sent_folder_name)
+* [`trash_folder_name`](#-sogo--trash_folder_name)
+* [`junk_folder_name`](#-sogo--junk_folder_name)
+* [`imap_cas_service_name`](#-sogo--imap_cas_service_name)
+* [`imap_server`](#-sogo--imap_server)
+* [`sieve_server`](#-sogo--sieve_server)
+* [`sieve_folder_encoding`](#-sogo--sieve_folder_encoding)
+* [`mail_show_subscribed_folders_only`](#-sogo--mail_show_subscribed_folders_only)
+* [`imap_acl_style`](#-sogo--imap_acl_style)
+* [`imap_acl_conforms_to_imap_ext`](#-sogo--imap_acl_conforms_to_imap_ext)
+* [`mail_spool_path`](#-sogo--mail_spool_path)
+* [`mime_build_mime_temp_directory`](#-sogo--mime_build_mime_temp_directory)
+* [`imap4_disable_imap4_pooling`](#-sogo--imap4_disable_imap4_pooling)
+* [`imap4_auth_mechanism`](#-sogo--imap4_auth_mechanism)
+* [`imap4_connection_group_id_prefix`](#-sogo--imap4_connection_group_id_prefix)
+* [`force_external_login_with_email`](#-sogo--force_external_login_with_email)
+* [`page_title`](#-sogo--page_title)
+* [`help_url`](#-sogo--help_url)
+* [`favicon_relative_url`](#-sogo--favicon_relative_url)
+* [`zip_path`](#-sogo--zip_path)
+* [`soft_quota_ratio`](#-sogo--soft_quota_ratio)
+* [`mail_use_outlook_style_replies`](#-sogo--mail_use_outlook_style_replies)
+* [`mail_list_view_columns_order`](#-sogo--mail_list_view_columns_order)
+* [`mail_add_outgoing_addresses`](#-sogo--mail_add_outgoing_addresses)
+* [`mail_certificate_enabled`](#-sogo--mail_certificate_enabled)
+* [`selected_address_book`](#-sogo--selected_address_book)
+* [`external_avatars_enabled`](#-sogo--external_avatars_enabled)
+* [`gravatar_enabled`](#-sogo--gravatar_enabled)
+* [`vacation_enabled`](#-sogo--vacation_enabled)
+* [`vacation_period_enabled`](#-sogo--vacation_period_enabled)
+* [`vacation_default_subject`](#-sogo--vacation_default_subject)
+* [`vacation_header_template_file`](#-sogo--vacation_header_template_file)
+* [`vacation_footer_template_file`](#-sogo--vacation_footer_template_file)
+* [`forward_enabled`](#-sogo--forward_enabled)
+* [`forward_constraints`](#-sogo--forward_constraints)
+* [`forward_constraints_domains`](#-sogo--forward_constraints_domains)
+* [`notification_enabled`](#-sogo--notification_enabled)
+* [`sieve_scripts_enabled`](#-sogo--sieve_scripts_enabled)
+* [`sieve_script_header_template_file`](#-sogo--sieve_script_header_template_file)
+* [`sieve_script_footer_template_file`](#-sogo--sieve_script_footer_template_file)
+* [`sieve_filters`](#-sogo--sieve_filters)
+* [`refresh_view_intervals`](#-sogo--refresh_view_intervals)
+* [`refresh_view_check`](#-sogo--refresh_view_check)
+* [`mail_auxiliary_user_accounts_enabled`](#-sogo--mail_auxiliary_user_accounts_enabled)
+* [`default_calendar`](#-sogo--default_calendar)
+* [`day_start_time`](#-sogo--day_start_time)
+* [`day_end_time`](#-sogo--day_end_time)
+* [`first_day_of_week`](#-sogo--first_day_of_week)
+* [`first_week_of_year`](#-sogo--first_week_of_year)
+* [`time_format`](#-sogo--time_format)
+* [`calendar_categories`](#-sogo--calendar_categories)
+* [`calendar_categories_colors`](#-sogo--calendar_categories_colors)
+* [`calendar_events_default_classification`](#-sogo--calendar_events_default_classification)
+* [`calendar_tasks_default_classification`](#-sogo--calendar_tasks_default_classification)
+* [`calendar_default_reminder`](#-sogo--calendar_default_reminder)
+* [`free_busy_default_interval`](#-sogo--free_busy_default_interval)
+* [`dav_calendar_start_time_limit`](#-sogo--dav_calendar_start_time_limit)
+* [`busy_off_hours`](#-sogo--busy_off_hours)
+* [`mail_message_forwarding`](#-sogo--mail_message_forwarding)
+* [`mail_reply_placement`](#-sogo--mail_reply_placement)
+* [`mail_signature_placement`](#-sogo--mail_signature_placement)
+* [`mail_use_signature_on_new`](#-sogo--mail_use_signature_on_new)
+* [`mail_use_signature_on_reply`](#-sogo--mail_use_signature_on_reply)
+* [`mail_use_signature_on_forward`](#-sogo--mail_use_signature_on_forward)
+* [`mail_compose_message_type`](#-sogo--mail_compose_message_type)
+* [`mail_compose_window`](#-sogo--mail_compose_window)
+* [`enable_email_alarms`](#-sogo--enable_email_alarms)
+* [`contacts_categories`](#-sogo--contacts_categories)
+* [`ui_additional_js_files`](#-sogo--ui_additional_js_files)
+* [`mail_custom_from_enabled`](#-sogo--mail_custom_from_enabled)
+* [`subscription_folder_format`](#-sogo--subscription_folder_format)
+* [`uix_additional_preferences`](#-sogo--uix_additional_preferences)
+* [`mail_junk_settings`](#-sogo--mail_junk_settings)
+* [`mail_keep_drafts_after_send`](#-sogo--mail_keep_drafts_after_send)
+* [`domains`](#-sogo--domains)
+* [`enable_domain_based_uid`](#-sogo--enable_domain_based_uid)
+* [`login_domains`](#-sogo--login_domains)
+* [`domains_visibility`](#-sogo--domains_visibility)
 
 ##### <a name="-sogo--language"></a>`language`
 
-Data type: `String[1]`
+Data type: `Optional[String[1]]`
 
 Default language used in the Web interface
 
-Default value: `'English'`
+Default value: `undef`
 
 ##### <a name="-sogo--time_zone"></a>`time_zone`
 
-Data type: `String[1]`
+Data type: `Optional[String[1]]`
 
 Default time zone for users
 
-Default value: `'America/Montreal'`
+Default value: `undef`
 
 ##### <a name="-sogo--login_module"></a>`login_module`
 
-Data type: `String[1]`
+Data type: `Optional[Enum['Calendar', 'Mail', 'Contacts']]`
 
 Module to show after login
 
-Default value: `'Calendar'`
+Default value: `undef`
 
 ##### <a name="-sogo--password_change_enabled"></a>`password_change_enabled`
 
-Data type: `Boolean`
+Data type: `Optional[Boolean]`
 
 Allow or not users to change their passwords from SOGo
 
-Default value: `false`
+Default value: `undef`
 
 ##### <a name="-sogo--user_sources"></a>`user_sources`
 
-Data type: `Array[Sogo::Usersource]`
+Data type: `Optional[Array[Sogo::Usersource]]`
 
 LDAP and/or SQL sources used for authentication and global address books
 
-Default value: `[]`
+Default value: `undef`
 
 ##### <a name="-sogo--profile_url"></a>`profile_url`
 
-Data type: `String[1]`
+Data type: `Optional[String[1]]`
 
 Database URL so that SOGo can retrieve user profiles
 
-Default value: `'postgresql://sogo:sogo@localhost:5432/sogo/sogo_user_profile'`
+Default value: `undef`
 
 ##### <a name="-sogo--folder_info_url"></a>`folder_info_url`
 
-Data type: `String[1]`
+Data type: `Optional[String[1]]`
 
 Database URL so that SOGo can retrieve the location of user folders
 
-Default value: `'postgresql://sogo:sogo@localhost:5432/sogo/sogo_folder_info'`
+Default value: `undef`
 
 ##### <a name="-sogo--sessions_folder_url"></a>`sessions_folder_url`
 
-Data type: `String[1]`
+Data type: `Optional[String[1]]`
 
 Database URL so that SOGo can store and retrieve secured user sessions information
 
-Default value: `'postgresql://sogo:sogo@localhost:5432/sogo/sogo_sessions_folder'`
+Default value: `undef`
 
 ##### <a name="-sogo--configuration_file"></a>`configuration_file`
 
@@ -124,34 +289,1522 @@ Data type: `String[1]`
 
 Ensure parameter for the SOGo package
 
+##### <a name="-sogo--workers_count"></a>`workers_count`
+
+Data type: `Optional[Integer[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--listen_queue_size"></a>`listen_queue_size`
+
+Data type: `Optional[Integer[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--port"></a>`port`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--log_file"></a>`log_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--pid_file"></a>`pid_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--watch_dog_request_timeout"></a>`watch_dog_request_timeout`
+
+Data type: `Optional[Integer[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--max_upload_size"></a>`max_upload_size`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_message_size_limit"></a>`maximum_message_size_limit`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mem_limit"></a>`mem_limit`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--memcached_host"></a>`memcached_host`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--cache_cleanup_interval"></a>`cache_cleanup_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--authentication_type"></a>`authentication_type`
+
+Data type: `Optional[Enum['', 'cas', 'saml2']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--trust_proxy_authentication"></a>`trust_proxy_authentication`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--encryption_key"></a>`encryption_key`
+
+Data type: `Optional[Sensitive[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--cas_service_url"></a>`cas_service_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--cas_logout_enabled"></a>`cas_logout_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--address_book_dav_access_enabled"></a>`address_book_dav_access_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_dav_access_enabled"></a>`calendar_dav_access_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_private_key_location"></a>`saml2_private_key_location`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_certificate_location"></a>`saml2_certificate_location`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_idp_metadata_location"></a>`saml2_idp_metadata_location`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_idp_public_key_location"></a>`saml2_idp_public_key_location`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_idp_certificate_location"></a>`saml2_idp_certificate_location`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_login_attribute"></a>`saml2_login_attribute`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_logout_enabled"></a>`saml2_logout_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--saml2_logout_url"></a>`saml2_logout_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_domain"></a>`mail_domain`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--appointment_send_email_notifications"></a>`appointment_send_email_notifications`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--folders_send_email_notifications"></a>`folders_send_email_notifications`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--acls_send_email_notifications"></a>`acls_send_email_notifications`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_default_roles"></a>`calendar_default_roles`
+
+Data type: `Optional[Array[Sogo::Calendar_role]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--contacts_default_roles"></a>`contacts_default_roles`
+
+Data type: `Optional[Array[Sogo::Contacts_role]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--super_usernames"></a>`super_usernames`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--notify_on_personal_modifications"></a>`notify_on_personal_modifications`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--notify_on_external_modifications"></a>`notify_on_external_modifications`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--iphone_force_all_day_transparency"></a>`iphone_force_all_day_transparency`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--enable_public_access"></a>`enable_public_access`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--disable_sharing"></a>`disable_sharing`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--supported_languages"></a>`supported_languages`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--hide_system_email"></a>`hide_system_email`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--search_minimum_word_length"></a>`search_minimum_word_length`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_failed_login_count"></a>`maximum_failed_login_count`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_failed_login_interval"></a>`maximum_failed_login_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--failed_login_block_interval"></a>`failed_login_block_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_message_submission_count"></a>`maximum_message_submission_count`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_recipient_count"></a>`maximum_recipient_count`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_submission_interval"></a>`maximum_submission_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--message_submission_block_interval"></a>`message_submission_block_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_request_count"></a>`maximum_request_count`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--maximum_request_interval"></a>`maximum_request_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--request_block_interval"></a>`request_block_interval`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--xsrf_validation_enabled"></a>`xsrf_validation_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--password_recovery_enabled"></a>`password_recovery_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--password_recovery_domains"></a>`password_recovery_domains`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--jwt_secret"></a>`jwt_secret`
+
+Data type: `Optional[Sensitive[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--create_identities_disabled"></a>`create_identities_disabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--email_alarms_folder_url"></a>`email_alarms_folder_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--disable_organizer_event_check"></a>`disable_organizer_event_check`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--store_url"></a>`store_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--acl_url"></a>`acl_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--cache_folder_url"></a>`cache_folder_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--ldap_contact_info_attribute"></a>`ldap_contact_info_attribute`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--ldap_query_limit"></a>`ldap_query_limit`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--ldap_query_timeout"></a>`ldap_query_timeout`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--ldap_group_expansion_enabled"></a>`ldap_group_expansion_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mailing_mechanism"></a>`mailing_mechanism`
+
+Data type: `Optional[Enum['sendmail', 'smtp']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--smtp_server"></a>`smtp_server`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--smtp_authentication_type"></a>`smtp_authentication_type`
+
+Data type: `Optional[Enum['PLAIN']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--smtp_master_user_enabled"></a>`smtp_master_user_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--smtp_master_user_username"></a>`smtp_master_user_username`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--smtp_master_user_password"></a>`smtp_master_user_password`
+
+Data type: `Optional[Sensitive[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--send_mail"></a>`send_mail`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--drafts_folder_name"></a>`drafts_folder_name`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sent_folder_name"></a>`sent_folder_name`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--trash_folder_name"></a>`trash_folder_name`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--junk_folder_name"></a>`junk_folder_name`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap_cas_service_name"></a>`imap_cas_service_name`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap_server"></a>`imap_server`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sieve_server"></a>`sieve_server`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sieve_folder_encoding"></a>`sieve_folder_encoding`
+
+Data type: `Optional[Enum['UTF-7', 'UTF-8']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_show_subscribed_folders_only"></a>`mail_show_subscribed_folders_only`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap_acl_style"></a>`imap_acl_style`
+
+Data type: `Optional[Enum['rfc2086', 'rfc4314']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap_acl_conforms_to_imap_ext"></a>`imap_acl_conforms_to_imap_ext`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_spool_path"></a>`mail_spool_path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mime_build_mime_temp_directory"></a>`mime_build_mime_temp_directory`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap4_disable_imap4_pooling"></a>`imap4_disable_imap4_pooling`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap4_auth_mechanism"></a>`imap4_auth_mechanism`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--imap4_connection_group_id_prefix"></a>`imap4_connection_group_id_prefix`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--force_external_login_with_email"></a>`force_external_login_with_email`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--page_title"></a>`page_title`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--help_url"></a>`help_url`
+
+Data type: `Optional[Stdlib::HTTPUrl]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--favicon_relative_url"></a>`favicon_relative_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--zip_path"></a>`zip_path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--soft_quota_ratio"></a>`soft_quota_ratio`
+
+Data type: `Optional[Float[0,1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_use_outlook_style_replies"></a>`mail_use_outlook_style_replies`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_list_view_columns_order"></a>`mail_list_view_columns_order`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_add_outgoing_addresses"></a>`mail_add_outgoing_addresses`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_certificate_enabled"></a>`mail_certificate_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--selected_address_book"></a>`selected_address_book`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--external_avatars_enabled"></a>`external_avatars_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--gravatar_enabled"></a>`gravatar_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--vacation_enabled"></a>`vacation_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--vacation_period_enabled"></a>`vacation_period_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--vacation_default_subject"></a>`vacation_default_subject`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--vacation_header_template_file"></a>`vacation_header_template_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--vacation_footer_template_file"></a>`vacation_footer_template_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--forward_enabled"></a>`forward_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--forward_constraints"></a>`forward_constraints`
+
+Data type: `Optional[Integer[0,2]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--forward_constraints_domains"></a>`forward_constraints_domains`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--notification_enabled"></a>`notification_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sieve_scripts_enabled"></a>`sieve_scripts_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sieve_script_header_template_file"></a>`sieve_script_header_template_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sieve_script_footer_template_file"></a>`sieve_script_footer_template_file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--sieve_filters"></a>`sieve_filters`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--refresh_view_intervals"></a>`refresh_view_intervals`
+
+Data type: `Optional[Array[Integer[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--refresh_view_check"></a>`refresh_view_check`
+
+Data type: `Optional[Sogo::Refresh_view_check]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_auxiliary_user_accounts_enabled"></a>`mail_auxiliary_user_accounts_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--default_calendar"></a>`default_calendar`
+
+Data type: `Optional[Enum['selected', 'personal', 'first']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--day_start_time"></a>`day_start_time`
+
+Data type: `Optional[Integer[0,12]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--day_end_time"></a>`day_end_time`
+
+Data type: `Optional[Integer[12,23]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--first_day_of_week"></a>`first_day_of_week`
+
+Data type: `Optional[Integer[0,6]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--first_week_of_year"></a>`first_week_of_year`
+
+Data type: `Optional[Sogo::First_week_of_year]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--time_format"></a>`time_format`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_categories"></a>`calendar_categories`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_categories_colors"></a>`calendar_categories_colors`
+
+Data type: `Optional[Hash[String[1], String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_events_default_classification"></a>`calendar_events_default_classification`
+
+Data type: `Optional[Sogo::Classification]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_tasks_default_classification"></a>`calendar_tasks_default_classification`
+
+Data type: `Optional[Sogo::Classification]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--calendar_default_reminder"></a>`calendar_default_reminder`
+
+Data type: `Optional[Sogo::Reminder]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--free_busy_default_interval"></a>`free_busy_default_interval`
+
+Data type: `Optional[Array[Integer[0],2,2]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--dav_calendar_start_time_limit"></a>`dav_calendar_start_time_limit`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--busy_off_hours"></a>`busy_off_hours`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_message_forwarding"></a>`mail_message_forwarding`
+
+Data type: `Optional[Enum['inline', 'attached']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_reply_placement"></a>`mail_reply_placement`
+
+Data type: `Optional[Enum['above', 'below']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_signature_placement"></a>`mail_signature_placement`
+
+Data type: `Optional[Enum['above', 'below']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_use_signature_on_new"></a>`mail_use_signature_on_new`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_use_signature_on_reply"></a>`mail_use_signature_on_reply`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_use_signature_on_forward"></a>`mail_use_signature_on_forward`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_compose_message_type"></a>`mail_compose_message_type`
+
+Data type: `Optional[Enum['text', 'html']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_compose_window"></a>`mail_compose_window`
+
+Data type: `Optional[Enum['inline', 'popup']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--enable_email_alarms"></a>`enable_email_alarms`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--contacts_categories"></a>`contacts_categories`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--ui_additional_js_files"></a>`ui_additional_js_files`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_custom_from_enabled"></a>`mail_custom_from_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--subscription_folder_format"></a>`subscription_folder_format`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--uix_additional_preferences"></a>`uix_additional_preferences`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_junk_settings"></a>`mail_junk_settings`
+
+Data type: `Optional[Sogo::Mail_junk_settings]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--mail_keep_drafts_after_send"></a>`mail_keep_drafts_after_send`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--domains"></a>`domains`
+
+Data type: `Optional[Hash[String[1], Sogo::Domain]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--enable_domain_based_uid"></a>`enable_domain_based_uid`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--login_domains"></a>`login_domains`
+
+Data type: `Optional[Array[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--domains_visibility"></a>`domains_visibility`
+
+Data type: `Optional[Array[Array[String[1]]]]`
+
+
+
+Default value: `undef`
+
+## Functions
+
+### <a name="sogo--to_plist"></a>`sogo::to_plist`
+
+Type: Ruby 4.x API
+
+Convert a data structure and output it in OpenStep plist format
+
+#### Examples
+
+##### Output OpenStep plist to a file
+
+```puppet
+file { '/tmp/my.yaml':
+  ensure  => file,
+  content => stdlib::to_yaml($myhash),
+}
+```
+
+#### `sogo::to_plist(Any $data, Optional[Integer] $indent)`
+
+The sogo::to_plist function.
+
+Returns: `String` The OpenStep plist formatted document
+
+##### Examples
+
+###### Output OpenStep plist to a file
+
+```puppet
+file { '/tmp/my.yaml':
+  ensure  => file,
+  content => stdlib::to_yaml($myhash),
+}
+```
+
+##### `data`
+
+Data type: `Any`
+
+The data you want to convert
+
+##### `indent`
+
+Data type: `Optional[Integer]`
+
+The indentation level to add to the output
+
 ## Data types
 
-### <a name="Sogo--Usersource"></a>`Sogo::Usersource`
+### <a name="Sogo--Calendar_role"></a>`Sogo::Calendar_role`
 
-Manage a SOGo user source
+Available roles for calendars
+
+Alias of `Enum['PublicViewer', 'PublicDAndTViewer', 'PublicModifier', 'PublicResponder', 'ConfidentialViewer', 'ConfidentialDAndTViewer', 'ConfidentialModifier', 'ConfidentialResponder', 'PrivateViewer', 'PrivateDAndTViewer', 'PrivateModifier', 'PrivateResponder', 'ObjectCreator', 'ObjectEraser']`
+
+### <a name="Sogo--Classification"></a>`Sogo::Classification`
+
+Available classifications for calendars and contacts
+
+Alias of `Enum['PUBLIC', 'CONFIDENTIAL', 'PRIVATE']`
+
+### <a name="Sogo--Contacts_role"></a>`Sogo::Contacts_role`
+
+Available roles for contacts
+
+Alias of `Enum['ObjectViewer', 'ObjectEditor', 'ObjectCreator', 'ObjectEraser']`
+
+### <a name="Sogo--Domain"></a>`Sogo::Domain`
+
+Describe a SOGo domain
 
 Alias of
 
 ```puppet
 Struct[{
-    type                    => Enum['ldap', 'sql'],
-    cn_field_name           => Optional[String],
-    uid_field_name          => Optional[String],
-    mail_field_names        => Optional[Array[String]],
-    search_field_names      => Optional[Array[String]],
-    id_field_name           => Optional[String],
-    bind_fields             => Optional[Array[String]],
-    base_dn                 => Optional[String],
-    bind_dn                 => Optional[String],
-    bind_password           => Optional[String],
-    can_authenticate        => Optional[Boolean],
-    display_name            => Optional[String],
-    filter                  => Optional[String],
-    hostname                => Optional[String],
-    id                      => Optional[String],
-    is_address_book         => Optional[Boolean],
-    user_password_algorithm => Optional[String],
-    view_url                => Optional[String],
+    # General Preferences
+    Optional[time_zone]                              => String[1],
+    Optional[mail_domain]                            => String[1],
+    Optional[appointment_send_email_notifications]   => Boolean,
+    Optional[folders_send_email_notifications]       => Boolean,
+    Optional[acls_send_email_notifications]          => Boolean,
+    Optional[calendar_default_roles]                 => Array[Sogo::Calendar_role],
+    Optional[contacts_default_roles]                 => Array[Sogo::Contacts_role],
+    Optional[super_usernames]                        => Array[String[1]],
+    Optional[language]                               => String[1],
+    Optional[notify_on_personal_modifications]       => Boolean,
+    Optional[notify_on_external_modifications]       => Boolean,
+    Optional[ldap_contact_info_attribute]            => String[1],
+    Optional[iphone_force_all_day_transparency]      => Boolean,
+    Optional[hide_system_email]                      => Boolean,
+    Optional[search_minimum_word_length]             => Integer[0],
+    Optional[user_sources]                           => Array[Sogo::Usersource],
+    Optional[create_identities_disabled]             => Boolean,
+
+    # Authentication using LDAP
+    Optional[ldap_contact_info_attribute]            => String[1],
+    Optional[ldap_query_limit]                       => String[1],
+    Optional[ldap_query_timeout]                     => Integer[0],
+    Optional[ldap_group_expansion_enabled]           => Boolean,
+
+    # SMTP Server Configuration
+    Optional[mailing_mechanism]                      => String[1],
+    Optional[smtp_server]                            => String[1],
+    Optional[smtp_authentication_type]               => String[1],
+    Optional[smtp_master_user_enabled]               => Boolean,
+    Optional[smtp_master_user_username]              => String[1],
+    Optional[smtp_master_user_password]              => Sensitive[String[1]],
+    Optional[force_external_login_with_email]        => Boolean,
+
+    # IMAP Server Configuration
+    Optional[drafts_folder_name]                     => String[1],
+    Optional[sent_folder_name]                       => String[1],
+    Optional[trash_folder_name]                      => String[1],
+    Optional[junk_folder_name]                       => String[1],
+    Optional[imap_cas_service_name]                  => String[1],
+    Optional[imap_server]                            => String[1],
+    Optional[sieve_server]                           => String[1],
+    Optional[sieve_folder_encoding]                  => Enum['UTF-7', 'UTF-8'],
+    Optional[mail_show_subscribed_folders_only]      => Boolean,
+    Optional[imap_acl_style]                         => Enum['rfc2086', 'rfc4314'],
+    Optional[imap_acl_conforms_to_imap_ext]          => Boolean,
+    #Optional[force_external_login_with_email]       => Boolean,
+    Optional[mail_spool_path]                        => String[1],
+    Optional[imap4_connection_group_id_prefix]       => String[1],
+
+    # Web Interface Configuration
+    Optional[login_module]                           => String[1],
+    Optional[soft_quota_ratio]                       => Float[0, 1],
+    Optional[mail_use_outlook_style_replies]         => Boolean,
+    Optional[mail_list_view_columns_order]           => Array[String[1]],
+    Optional[mail_add_outgoing_addresses]            => Boolean,
+    Optional[mail_certificate_enabled]               => Boolean,
+    Optional[selected_address_book]                  => String[1],
+    Optional[external_avatars_enabled]               => Boolean,
+    Optional[gravatar_enabled]                       => Boolean,
+    Optional[vacation_enabled]                       => Boolean,
+    Optional[vacation_period_enabled]                => Boolean,
+    Optional[vacation_default_subject]               => String[1],
+    Optional[vacation_header_template_file]          => Stdlib::Absolutepath,
+    Optional[vacation_footer_template_file]          => Stdlib::Absolutepath,
+    Optional[forward_enabled]                        => Boolean,
+    Optional[forward_constraints]                    => Integer[0, 2],
+    Optional[forward_constraints_domains]            => Array[String[1]],
+    Optional[notification_enabled]                   => Boolean,
+    Optional[sieve_scripts_enabled]                  => Boolean,
+    Optional[sieve_script_header_template_file]      => Stdlib::Absolutepath,
+    Optional[sieve_script_footer_template_file]      => Stdlib::Absolutepath,
+    Optional[sieve_filters]                          => Array[String[1]],
+    Optional[refresh_view_intervals]                 => Array[Integer[0]],
+    Optional[refresh_view_check]                     => Sogo::Refresh_view_check,
+    Optional[mail_auxiliary_user_accounts_enabled]   => Boolean,
+    Optional[default_calendar]                       => Enum['selected','personal','first'],
+    Optional[day_start_time]                         => Integer[0,12],
+    Optional[day_end_time]                           => Integer[12,23],
+    Optional[first_day_of_week]                      => Integer[0,6],
+    Optional[first_week_of_year]                     => Enum['January1','First4DayWeek','FirstFullWeek'],
+    Optional[time_format]                            => String[1],
+    Optional[calendar_categories]                    => Array[String[1]],
+    Optional[calendar_categories_colors]             => Hash[String[1], String[1]],
+    Optional[calendar_events_default_classification] => Enum['PUBLIC','CONFIDENTIAL','PRIVATE'],
+    Optional[calendar_tasks_default_classification]  => Enum['PUBLIC','CONFIDENTIAL','PRIVATE'],
+    Optional[calendar_default_reminder]              => Sogo::Reminder,
+    Optional[free_busy_default_interval]             => Array[Integer[0], 2, 2],
+    Optional[dav_calendar_start_time_limit]          => Integer[0],
+    Optional[busy_off_hours]                         => Boolean,
+    Optional[mail_message_forwarding]                => String[1],
+    Optional[mail_reply_placement]                   => String[1],
+    Optional[mail_signature_placement]               => String[1],
+    Optional[mail_use_signature_on_new]              => Boolean,
+    Optional[mail_use_signature_on_reply]            => Boolean,
+    Optional[mail_use_signature_on_forward]          => Boolean,
+    Optional[mail_compose_message_type]              => Enum['text', 'html'],
+    Optional[mail_compose_window]                    => Enum['inline', 'popup'],
+    Optional[enable_email_alarms]                    => Boolean,
+    Optional[contacts_categories]                    => Array[String[1]],
+    Optional[ui_additional_js_files]                 => Array[String[1]],
+    Optional[mail_custom_from_enabled]               => Boolean,
+    Optional[subscription_folder_format]             => String[1],
+    Optional[uix_additional_preferences]             => Boolean,
+    Optional[mail_junk_settings]                     => Sogo::Mail_junk_settings,
+    Optional[mail_keep_drafts_after_send]            => Boolean,
+  }]
+```
+
+### <a name="Sogo--First_week_of_year"></a>`Sogo::First_week_of_year`
+
+Available values for the first week of the year
+
+Alias of `Enum['January1', 'First4DayWeek', 'FirstFullWeek']`
+
+### <a name="Sogo--Mail_junk_settings"></a>`Sogo::Mail_junk_settings`
+
+Describe SOGo junk mail settings
+
+Alias of
+
+```puppet
+Struct[vendor              => Enum['generic'],
+  junkEmailAddress    => String[1],
+  notJunkEmailAddress => String[1],
+  limit               => Integer[0]]
+```
+
+### <a name="Sogo--Refresh_view_check"></a>`Sogo::Refresh_view_check`
+
+Available values for refreshing views
+
+Alias of `Enum['manually', 'every_minute', 'every_2_minutes', 'every_5_minutes', 'every_10_minutes', 'every_20_minutes', 'every_30_minutes', 'once_per_hour']`
+
+### <a name="Sogo--Reminder"></a>`Sogo::Reminder`
+
+Supported values for SOGo reminders
+
+Alias of `Enum['-PT5M', '-PT10M', '-PT15M', '-PT30M', '-PT45M', '-PT1H', '-PT2H', '-PT5H', '-PT15H', '-P1D', '-P2D', '-P1W']`
+
+### <a name="Sogo--Usersource"></a>`Sogo::Usersource`
+
+Describe a SOGo user source
+
+Alias of `Variant[Sogo::Usersource_ldap, Sogo::Usersource_sql]`
+
+### <a name="Sogo--Usersource_ldap"></a>`Sogo::Usersource_ldap`
+
+Describe a SOGo LDAP user source
+
+Alias of
+
+```puppet
+Struct[{
+    type                         => Enum['ldap'],
+    id                           => Optional[String[1]],
+
+    cn_field_name                => Optional[String[1]],
+    id_field_name                => Optional[String[1]],
+    uid_field_name               => Optional[String[1]],
+    mail_field_names             => Optional[Array[String[1]]],
+    search_field_names           => Optional[Array[String[1]]],
+    imap_host_field_name         => Optional[String[1]],
+    imap_login_field_name        => Optional[String[1]],
+    sieve_host_field_name        => Optional[String[1]],
+    base_dn                      => Optional[String[1]],
+    kind_field_name              => Optional[String[1]],
+    multiple_bookings_field_name => Optional[Integer[-1]],
+    filter                       => Optional[String[1]],
+    scope                        => Optional[Enum['BASE', 'ONE', 'SUB']],
+    bind_dn                      => Optional[String[1]],
+    bind_password                => Optional[Sensitive[String[1]]],
+    bind_as_current_user         => Optional[Boolean],
+    bind_fields                  => Optional[Array[String]],
+    lookup_fields                => Optional[Array[String[1]]],
+    hostname                     => Optional[String[1]],
+    # port
+    # encryption
+    user_password_algorithm      => Optional[String[1]],
+    can_authenticate             => Optional[Boolean],
+    password_policy              => Optional[Boolean],
+    update_samba_ntlm_passwords  => Optional[Boolean],
+    is_address_book              => Optional[Boolean],
+    display_name                 => Optional[String[1]],
+    list_requires_dot            => Optional[Boolean],
+    modules_constraints          => Optional[Hash[String[1], Hash[String[1], String[1]]]],
+    mapping                      => Optional[Hash[String[1], Array[String[1]]]],
+    object_classes               => Optional[Array[String[1]]],
+    group_object_classes         => Optional[Array[String[1]]],
+    modifiers                    => Optional[Array[String[1]]],
+    ab_ou                        => Optional[String[1]],
+
+    # DS
+    ldap_contact_info_attribute  => Optional[String[1]],
+    ldap_query_limit             => Optional[Integer[1]],
+    ldap_query_timeout           => Optional[Integer[0]],
+    ldap_group_expansion_enabled => Optional[Boolean],
+  }]
+```
+
+### <a name="Sogo--Usersource_sql"></a>`Sogo::Usersource_sql`
+
+Describe a SOGo SQL user source
+
+Alias of
+
+```puppet
+Struct[{
+    type                         => Enum['sql'],
+    id                           => String[1],
+
+    view_url                     => String[1],
+    user_password_policy         => Optional[Array[Struct[label => String[1], regex => String[1]]]],
+    user_password_algorithm      => Optional[String[1]],
+    prepend_password_scheme      => Optional[Boolean],
+    key_path                     => Optional[Stdlib::Absolutepath],
+    can_authenticate             => Optional[Boolean],
+    is_address_book              => Optional[Boolean],
+
+    authentication_filter        => Optional[String[1]],
+    display_name                 => Optional[String[1]],
+    login_field_names            => Optional[Array[String[1]]],
+    mail_field_names             => Optional[Array[String[1]]],
+    search_field_names           => Optional[Array[String[1]]],
+    imap_host_field_name         => Optional[String[1]],
+    imap_login_field_name        => Optional[String[1]],
+    sieve_host_field_name        => Optional[String[1]],
+    kind_field_name              => Optional[String[1]],
+    multiple_bookings_field_name => Optional[Integer[-1]],
+    domain_field_name            => Optional[String[1]],
+    list_requires_dot            => Optional[Boolean],
+    modules_constraints          => Optional[Hash[String[1], Hash[String[1], String[1]]]],
   }]
 ```
 
