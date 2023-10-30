@@ -1,190 +1,501 @@
 {
-  /* *********************  Main SOGo configuration file  **********************
-   *                                                                           *
-   * Since the content of this file is a dictionary in OpenStep plist format,  *
-   * the curly braces enclosing the body of the configuration are mandatory.   *
-   * See the Installation Guide for details on the format.                     *
-   *                                                                           *
-   * C and C++ style comments are supported.                                   *
-   *                                                                           *
-   * This example configuration contains only a subset of all available        *
-   * configuration parameters. Please see the installation guide more details. *
-   *                                                                           *
-   * ~sogo/GNUstep/Defaults/.GNUstepDefaults has precedence over this file,    *
-   * make sure to move it away to avoid unwanted parameter overrides.          *
-   *                                                                           *
-   * **************************************************************************/
-
-  /* Database configuration (mysql:// or postgresql://) */
-  SOGoProfileURL = "<%= $sogo::profile_url %>";
-  OCSFolderInfoURL = "<%= $sogo::folder_info_url %>";
-  OCSSessionsFolderURL = "<%= $sogo::sessions_folder_url %>";
-
-  /* Mail */
-  //SOGoDraftsFolderName = Drafts;
-  //SOGoSentFolderName = Sent;
-  //SOGoTrashFolderName = Trash;
-  //SOGoIMAPServer = localhost;
-  //SOGoSieveServer = sieve://127.0.0.1:4190;
-  //SOGoSMTPServer = 127.0.0.1;
-  //SOGoMailDomain = acme.com;
-  //SOGoMailingMechanism = smtp;
-  //SOGoForceExternalLoginWithEmail = NO;
-  //SOGoMailSpoolPath = /var/spool/sogo;
-  //NGImap4ConnectionStringSeparator = "/";
-
-  /* Notifications */
-  //SOGoAppointmentSendEMailNotifications = NO;
-  //SOGoACLsSendEMailNotifications = NO;
-  //SOGoFoldersSendEMailNotifications = NO;
-
-  /* Authentication */
-  SOGoPasswordChangeEnabled = <%= bool2str($sogo::password_change_enabled, 'YES', 'NO') %>;
-
-  /* LDAP authentication example */
-  //SOGoUserSources = (
-  //  {
-  //    type = ldap;
-  //    CNFieldName = cn;
-  //    UIDFieldName = uid;
-  //    IDFieldName = uid; // first field of the DN for direct binds
-  //    bindFields = (uid, mail); // array of fields to use for indirect binds
-  //    baseDN = "ou=users,dc=acme,dc=com";
-  //    bindDN = "uid=sogo,ou=users,dc=acme,dc=com";
-  //    bindPassword = qwerty;
-  //    canAuthenticate = YES;
-  //    displayName = "Shared Addresses";
-  //    hostname = ldap://127.0.0.1:389;
-  //    id = public;
-  //    isAddressBook = YES;
-  //  }
-  //);
-
-  /* LDAP AD/Samba4 example */
-  //SOGoUserSources = (
-  //  {
-  //    type = ldap;
-  //    CNFieldName = cn;
-  //    UIDFieldName = sAMAccountName;
-  //    baseDN = "CN=users,dc=domain,dc=tld";
-  //    bindDN = "CN=sogo,CN=users,DC=domain,DC=tld";
-  //    bindFields = (sAMAccountName, mail);
-  //    bindPassword = password;
-  //    canAuthenticate = YES;
-  //    displayName = "Public";
-  //    hostname = ldap://127.0.0.1:389;
-  //    filter = "mail = '*'";
-  //    id = directory;
-  //    isAddressBook = YES;
-  //  }
-  //);
-
-  SOGoUserSources = (
-<% $sogo::user_sources.each |$user_source| { -%>
-    {
-      <%-
-        $fields = {
-          'type'                  => 'type',
-
-          'CNFieldName'           => 'cn_field_name',
-          'IDFieldName'           => 'id_field_name',
-          'MailFieldNames'        => 'mail_field_names',
-          'SearchFieldNames'      => 'search_field_names',
-          'UIDFieldName'          => 'uid_field_name',
-          'baseDN'                => 'base_dn',
-          'bindDN'                => 'bind_dn',
-          'bindFields'            => 'bind_fields',
-          'bindPassword'          => 'bind_password',
-          'canAuthenticate'       => 'can_authenticate',
-          'displayName'           => 'display_name',
-          'filter'                => 'filter',
-          'hostname'              => 'hostname',
-          'id'                    => 'id',
-          'isAddressBook'         => 'is_address_book',
-          'userPasswordAlgorithm' => 'user_password_algorithm',
-          'viewURL'               => 'view_url',
-        }
-      -%>
-      <%- $fields.each |$sogo_key, $key| { -%>
-        <%- $value = $user_source[$key] -%>
-        <%-
-          case $value {
-            Array: {
-              $sogo_value = concat(['('], [$value.join(', ')], [')']).join('')
-              $skip = false
-            }
-            String: {
-              if $value =~ /[ ,;=]/ {
-	        # FIXME: Values with double-quotes will not like this
-                $sogo_value = "\"${value}\""
-              } else {
-                $sogo_value = $value
-              }
-              $skip = false
-            }
-            true: {
-              $sogo_value = 'YES'
-              $skip = false
-            }
-            false: {
-              $sogo_value = 'NO'
-              $skip = false
-            }
-            default: {
-              $skip = true
-            }
-          }
-        -%>
-        <%- unless $skip { -%>
-          <%= $sogo_key %> = <%= $sogo_value %>;
-        <%- } -%>
-      <%- } -%>
-    }
+  /* General Preferences */
+<% if $sogo::workers_count { -%>
+  WOWorkersCount = <%= $sogo::workers_count %>;
 <% } -%>
-  );
-
-  /* SQL authentication example */
-  /*  These database columns MUST be present in the view/table:
-   *    c_uid - will be used for authentication -  it's the username or username@domain.tld)
-   *    c_name - which can be identical to c_uid -  will be used to uniquely identify entries
-   *    c_password - password of the user, plain-text, md5 or sha encoded for now
-   *    c_cn - the user's common name - such as "John Doe"
-   *    mail - the user's mail address
-   *  See the installation guide for more details
-   */
-  //SOGoUserSources =
-  //  (
-  //    {
-  //      type = sql;
-  //      id = directory;
-  //      viewURL = "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_view";
-  //      canAuthenticate = YES;
-  //      isAddressBook = YES;
-  //      userPasswordAlgorithm = md5;
-  //    }
-  //  );
-
-  /* Web Interface */
-  //SOGoPageTitle = SOGo;
-  //SOGoVacationEnabled = YES;
-  //SOGoForwardEnabled = YES;
-  //SOGoSieveScriptsEnabled = YES;
-  //SOGoMailAuxiliaryUserAccountsEnabled = YES;
-  //SOGoTrustProxyAuthentication = NO;
-
-  /* General */
-  SOGoLanguage = <%= $sogo::language %>;
+<% if $sogo::listen_queue_size { -%>
+  WOListenQueueSize = <%= $sogo::listen_queue_size %>;
+<% } -%>
+<% if $sogo::port { -%>
+  WOPort = <%= $sogo::port %>;
+<% } -%>
+<% if $sogo::log_file { -%>
+  WOLogFile = <%= $sogo::log_file %>;
+<% } -%>
+<% if $sogo::pid_file { -%>
+  WOPidFile = <%= $sogo::pid_file %>;
+<% } -%>
+<% if $sogo::watch_dog_request_timeout { -%>
+  WOWatchDogRequestTimeout = <%= $sogo::watch_dog_request_timeout %>;
+<% } -%>
+<% if $sogo::max_upload_size { -%>
+  WOMaxUploadSize = <%= $sogo::max_upload_size %>;
+<% } -%>
+<% if $sogo::maximum_message_size_limit { -%>
+  SOGoMaximumMessageSizeLimit = <%= $sogo::maximum_message_size_limit %>;
+<% } -%>
+<%if $sogo::mem_limit { -%>
+  SxVMemLimit = <%= $sogo::mem_limit %>;
+<% } -%>
+<% if $sogo::memcached_host { -%>
+  SOGoMemcachedHost = <%= $sogo::memcached_host %>;
+<% } -%>
+<% if $sogo::cache_cleanup_interval { -%>
+  SOGoCacheCleanupInterval = <%= $sogo::cache_cleanup_interval %>;
+<% } -%>
+<% if $sogo::authentication_type { -%>
+  SOGoAuthenticationType = "<%= $sogo::authentication_type %>";
+<% } -%>
+<% if $sogo::trust_proxy_authentication != undef { -%>
+  SOGoTrustProxyAuthentication = <%= $sogo::trust_proxy_authentication.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::encryption_key { -%>
+  SOGoEncryptionKey = <%= Sensitive($sogo::encryption_key.sogo::to_plist) %>;
+<% } -%>
+<% if $sogo::cas_service_url { -%>
+  SOGoCASServiceURL = <%= $sogo::cas_service_url %>;
+<% } -%>
+<% if $sogo::cas_logout_enabled != undef { -%>
+  SOGoCASLogoutEnabled = <%= $sogo::cas_logout_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::address_book_dav_access_enabled != undef { -%>
+  SOGoAddressBookDAVAccessEnabled = <%= $sogo::address_book_dav_access_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::calendar_dav_access_enabled != undef { -%>
+  SOGoCalendarDAVAccessEnabled = <%= $sogo::calendar_dav_access_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::saml2_private_key_location { -%>
+  SOGoSAML2PrivateKeyLocation = <%= $sogo::saml2_private_key_location %>;
+<% } -%>
+<% if $sogo::saml2_certificate_location { -%>
+  SOGoSAML2CertificateLocation = <%= $sogo::saml2_certificate_location %>;
+<% } -%>
+<% if $sogo::saml2_idp_metadata_location { -%>
+  SOGoSAML2IdpMetadataLocation = <%= $sogo::saml2_idp_metadata_location %>;
+<% } -%>
+<% if $sogo::saml2_idp_public_key_location { -%>
+  SOGoSAML2IdpPublicKeyLocation = <%= $sogo::saml2_idp_public_key_location %>;
+<% } -%>
+<% if $sogo::saml2_idp_certificate_location { -%>
+  SOGoSAML2IdpCertificateLocation = <%= $sogo::saml2_idp_certificate_location %>;
+<% } -%>
+<% if $sogo::saml2_login_attribute { -%>
+  SOGoSAML2LoginAttribute = <%= $sogo::saml2_login_attribute %>;
+<% } -%>
+<% if $sogo::saml2_logout_enabled != undef { -%>
+  SOGoSAML2LogoutEnabled = <%= $sogo::saml2_logout_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::saml2_logout_url { -%>
+  SOGoSAML2LogoutURL = <%= $sogo::saml2_logout_url %>;
+<% } -%>
+<% if $sogo::time_zone { -%>
   SOGoTimeZone = <%= $sogo::time_zone %>;
+<% } -%>
+<% if $sogo::mail_domain { -%>
+  SOGoMailDomain = <%= $sogo::mail_domain %>;
+<% } -%>
+<% if $sogo::appointment_send_email_notifications != undef { -%>
+  SOGoAppointmentSendEMailNotifications = <%= $sogo::appointment_send_email_notifications.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::folders_send_email_notifications != undef { -%>
+  SOGoFoldersSendEMailNotifications = <%= $sogo::folders_send_email_notifications.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::acls_send_email_notifications != undef { -%>
+  SOGoACLsSendEMailNotifications = <%= $sogo::acls_send_email_notifications.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::calendar_default_roles { -%>
+  SOGoCalendarDefaultRoles = <%= $sogo::calendar_default_roles.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::contacts_default_roles { -%>
+  SOGoContactsDefaultRoles = <%= $sogo::contacts_default_roles.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::super_usernames { -%>
+  SOGoSuperUsernames = <%= $sogo::super_usernames.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::language { -%>
+  SOGoLanguage = <%= $sogo::language %>;
+<% } -%>
+<% if $sogo::notify_on_personal_modifications != undef { -%>
+  SOGoNotifyOnPersonalModifications = <%= $sogo::notify_on_personal_modifications.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::notify_on_external_modifications != undef { -%>
+  SOGoNotifyOnExternalModifications = <%= $sogo::notify_on_external_modifications.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::ldap_contact_info_attribute { -%>
+  SOGoLDAPContactInfoAttribute = <%= $sogo::ldap_contact_info_attribute %>;
+<% } -%>
+<% if $sogo::iphone_force_all_day_transparency != undef { -%>
+  SOGoiPhoneForceAllDayTransparency = <%= $sogo::iphone_force_all_day_transparency.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::enable_public_access != undef { -%>
+  SOGoEnablePublicAccess = <%= $sogo::enable_public_access.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::disable_sharing != undef { -%>
+  SOGoDisableSharing = <%= $sogo::disable_sharing.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::password_change_enabled != undef { -%>
+  SOGoPasswordChangeEnabled = <%= $sogo::password_change_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::supported_languages { -%>
+  SOGoSupportedLanguages = <%= $sogo::supported_languages.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::hide_system_email != undef { -%>
+  SOGoHideSystemEMail = <%= $sogo::hide_system_email.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::search_minimum_word_length { -%>
+  SOGoSearchMinimumWordLength = <%= $sogo::search_minimum_word_length %>;
+<% } -%>
+<% if $sogo::maximum_failed_login_count { -%>
+  SOGoMaximumFailedLoginCount = <%= $sogo::maximum_failed_login_count %>;
+<% } -%>
+<% if $sogo::maximum_failed_login_interval { -%>
+  SOGoMaximumFailedLoginInterval = <%= $sogo::maximum_failed_login_interval %>;
+<% } -%>
+<% if $sogo::failed_login_block_interval { -%>
+  SOGoFailedLoginBlockInterval = <%= $sogo::failed_login_block_interval %>;
+<% } -%>
+<% if $sogo::maximum_message_submission_count { -%>
+  SOGoMaximumMessageSubmissionCount = <%= $sogo::maximum_message_submission_count %>;
+<% } -%>
+<% if $sogo::maximum_recipient_count { -%>
+  SOGoMaximumRecipientCount = <%= $sogo::maximum_recipient_count %>;
+<% } -%>
+<% if $sogo::maximum_submission_interval { -%>
+  SOGoMaximumSubmissionInterval = <%= $sogo::maximum_submission_interval %>;
+<% } -%>
+<% if $sogo::message_submission_block_interval { -%>
+  SOGoMessageSubmissionBlockInterval = <%= $sogo::message_submission_block_interval %>;
+<% } -%>
+<% if $sogo::maximum_request_count { -%>
+  SOGoMaximumRequestCount = <%= $sogo::maximum_request_count %>;
+<% } -%>
+<% if $sogo::maximum_request_interval { -%>
+  SOGoMaximumRequestInterval = <%= $sogo::maximum_request_interval %>;
+<% } -%>
+<% if $sogo::request_block_interval { -%>
+  SOGoRequestBlockInterval = <%= $sogo::request_block_interval %>;
+<% } -%>
+<% if $sogo::xsrf_validation_enabled != undef { -%>
+  SOGoXSRFValidationEnabled = <%= $sogo::xsrf_validation_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::user_sources { -%>
+  SOGoUserSources = <%= $sogo::user_sources.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::password_recovery_enabled != undef { -%>
+  SOGoPasswordRecoveryEnabled = <%= $sogo::password_recovery_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::password_recovery_domains { -%>
+  SOGoPasswordRecoveryDomains = <%= $sogo::password_recovery_domains.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::jwt_secret { -%>
+  SOGoJWTSecret = <%= Sensitive($sogo::jwt_secret.sogo::to_plist) %>;
+<% } -%>
+<% if $sogo::create_identities_disabled != undef { -%>
+  SOGoCreateIdentitiesDisabled = <%= $sogo::create_identities_disabled.bool2str('YES', 'NO') %>;
+<% } -%>
+
+  /* Database Configuration */
+<% if $sogo::profile_url { -%>
+  SOGoProfileURL = <%= $sogo::profile_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::folder_info_url { -%>
+  OCSFolderInfoURL = <%= $sogo::folder_info_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::sessions_folder_url { -%>
+  OCSSessionsFolderURL = <%= $sogo::sessions_folder_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::email_alarms_folder_url { -%>
+  OCSEMailAlarmsFolderURL = <%= $sogo::email_alarms_folder_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::disable_organizer_event_check != undef { -%>
+  SOGoDisableOrganizerEventCheck = <%= $sogo::disable_organizer_event_check.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::store_url { -%>
+  OCSStoreURL = <%= $sogo::store_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::acl_url { -%>
+  OCSAclURL = <%= $sogo::acl_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::cache_folder_url { -%>
+  OCSCacheFolderURL = <%= $sogo::cache_folder_url.sogo::to_plist %>;
+<% } -%>
+
+  /* Authentication using LDAP */
+<% if $sogo::ldap_contact_info_attribute { -%>
+  SOGoLDAPContactInfoAttribute = <%= $sogo::ldap_contact_info_attribute.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::ldap_query_limit { -%>
+  SOGoLDAPQueryLimit = <%= $sogo::ldap_query_limit.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::ldap_query_timeout { -%>
+  SOGoLDAPQueryTimeout = <%= $sogo::ldap_query_timeout.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::ldap_group_expansion_enabled != undef{ -%>
+  SOGoLDAPGroupExpansionEnabled = <%= $sogo::ldap_group_expansion_enabled.sogo::to_plist %>;
+<% } -%>
+
+  /* SMTP Server Configuration */
+<% if $sogo::mailing_mechanism { -%>
+  SOGoMailingMechanism = <%= $sogo::mailing_mechanism %>;
+<% } -%>
+<% if $sogo::smtp_server { -%>
+  SOGoSMTPServer = <%= $sogo::smtp_server.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::smtp_authentication_type { -%>
+  SOGoSMTPAuthenticationType = <%= $sogo::smtp_authentication_type %>;
+<% } -%>
+<% if $sogo::smtp_master_user_enabled != undef { -%>
+  SOGoSMTPMasterUserEnabled = <%= $sogo::smtp_master_user_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::smtp_master_user_username { -%>
+  SOGoSMTPMasterUserUsername = <%= $sogo::smtp_master_user_username.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::smtp_master_user_password { -%>
+  SOGoSMTPMasterUserPassword = <%= Sensitive($sogo::smtp_master_user_password.sogo::to_plist) %>;
+<% } -%>
+<% if $sogo::send_mail { -%>
+  WOSendMail = <%= $sogo::send_mail.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::force_external_login_with_email != undef { -%>
+  SOGoForceExternalLoginWithEmail = <%= $sogo::force_external_login_with_email.bool2str('YES', 'NO') %>;
+<% } -%>
+
+  /* IMAP Server Configuration */
+<% if $sogo::drafts_folder_name { -%>
+  SOGoDraftsFolderName = <%= $sogo::drafts_folder_name %>;
+<% } -%>
+<% if $sogo::sent_folder_name { -%>
+  SOGoSentFolderName = <%= $sogo::sent_folder_name %>;
+<% } -%>
+<% if $sogo::trash_folder_name { -%>
+  SOGoTrashFolderName = <%= $sogo::trash_folder_name %>;
+<% } -%>
+<% if $sogo::junk_folder_name { -%>
+  SOGoJunkFolderName = <%= $sogo::junk_folder_name %>;
+<% } -%>
+<% if $sogo::imap_cas_service_name { -%>
+  SOGoIMAPCASServiceName = <%= $sogo::imap_cas_service_name.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::imap_server { -%>
+  SOGoIMAPServer = <%= $sogo::imap_server.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::sieve_server { -%>
+  SOGoSieveServer = <%= $sogo::sieve_server.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::sieve_folder_encoding { -%>
+  SOGoSieveFolderEncoding = <%= $sogo::sieve_folder_encoding %>;
+<% } -%>
+<% if $sogo::mail_show_subscribed_folders_only != undef { -%>
+  SOGoMailShowSubscribedFoldersOnly = <%= $sogo::mail_show_subscribed_folders_only.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::imap_acl_style { -%>
+  SOGoIMAPAclStyle = <%= $sogo::imap_acl_style %>;
+<% } -%>
+<% if $sogo::imap_acl_conforms_to_imap_ext != undef { -%>
+  SOGoIMAPAclConformsToIMAPExt = <%= $sogo::imap_acl_conforms_to_imap_ext.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::force_external_login_with_email != undef { -%>
+  SOGoForceExternalLoginWithEmail = <%= $sogo::force_external_login_with_email.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::mail_spool_path { -%>
+  SOGoMailSpoolPath = <%= $sogo::mail_spool_path %>;
+<% } -%>
+<% if $sogo::mime_build_mime_temp_directory { -%>
+  NGMimeBuildMimeTempDirectory = <%= $sogo::mime_build_mime_temp_directory %>;
+<% } -%>
+<% if $sogo::imap4_disable_imap4_pooling != undef { -%>
+  NGImap4DisableIMAP4Pooling = <%= $sogo::imap4_disable_imap4_pooling.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::imap4_auth_mechanism { -%>
+  NGImap4AuthMechanism = <%= $sogo::imap4_auth_mechanism %>;
+<% } -%>
+<% if $sogo::imap4_connection_group_id_prefix { -%>
+  NGImap4ConnectionGroupIdPrefix = <%= $sogo::imap4_connection_group_id_prefix.sogo::to_plist %>;
+<% } -%>
+
+  /* Web Interface Configuration */
+<% if $sogo::page_title { -%>
+  SOGoPageTitle = <%= $sogo::page_title.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::help_url { -%>
+  SOGoHelpURL = <%= $sogo::help_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::login_module { -%>
   SOGoLoginModule = <%= $sogo::login_module %>;
-  //SOGoCalendarDefaultRoles = (
-  //  PublicDAndTViewer,
-  //  ConfidentialDAndTViewer
-  //);
-  //SOGoSuperUsernames = (sogo1, sogo2); // This is an array - keep the parens!
-  //SxVMemLimit = 384;
-  //WOPidFile = "/var/run/sogo/sogo.pid";
-  //SOGoMemcachedHost = "/var/run/memcached.sock";
-  
+<% } -%>
+<% if $sogo::favicon_relative_url { -%>
+  SOGoFaviconRelativeURL = <%= $sogo::favicon_relative_url %>;
+<% } -%>
+<% if $sogo::zip_path { -%>
+  SOGoZipPath = <%= $sogo::zip_path %>;
+<% } -%>
+<% if $sogo::soft_quota_ratio { -%>
+  SOGoSoftQuotaRatio = <%= $sogo::soft_quota_ratio %>;
+<% } -%>
+<% if $sogo::mail_use_outlook_style_replies != undef { -%>
+  SOGoMailUseOutlookStyleReplies = <%= $sogo::mail_use_outlook_style_replies.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_list_view_columns_order { -%>
+  SOGoMailListViewColumnsOrder = <%= $sogo::mail_list_view_columns_order.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_add_outgoing_addresses != undef { -%>
+  SOGoMailAddOutgoingAddresses = <%= $sogo::mail_add_outgoing_addresses.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_certificate_enabled != undef { -%>
+  SOGoMailCertificateEnabled = <%= $sogo::mail_certificate_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::selected_address_book { -%>
+  SOGoSelectedAddressBook = <%= $sogo::selected_address_book %>;
+<% } -%>
+<% if $sogo::external_avatars_enabled != undef { -%>
+  SOGoExternalAvatarsEnabled = <%= $sogo::external_avatars_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::gravatar_enabled != undef { -%>
+  SOGoGravatarEnabled = <%= $sogo::gravatar_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::vacation_enabled != undef { -%>
+  SOGoVacationEnabled = <%= $sogo::vacation_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::vacation_period_enabled != undef { -%>
+  SOGoVacationPeriodEnabled = <%= $sogo::vacation_period_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::vacation_default_subject { -%>
+  SOGoVacationDefaultSubject = <%= $sogo::vacation_default_subject.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::vacation_header_template_file { -%>
+  SOGoVacationHeaderTemplateFile = <%= $sogo::vacation_header_template_file %>;
+<% } -%>
+<% if $sogo::vacation_footer_template_file { -%>
+  SOGoVacationFooterTemplateFile = <%= $sogo::vacation_footer_template_file %>;
+<% } -%>
+<% if $sogo::forward_enabled != undef { -%>
+  SOGoForwardEnabled = <%= $sogo::forward_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::forward_constraints { -%>
+  SOGoForwardConstraints = <%= $sogo::forward_constraints %>;
+<% } -%>
+<% if $sogo::forward_constraints_domains { -%>
+  SOGoForwardConstraintsDomains = <%= $sogo::forward_constraints_domains.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::notification_enabled != undef { -%>
+  SOGoNotificationEnabled = <%= $sogo::notification_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::sieve_scripts_enabled != undef { -%>
+  SOGoSieveScriptsEnabled = <%= $sogo::sieve_scripts_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::sieve_script_header_template_file { -%>
+  SOGoSieveScriptHeaderTemplateFile = <%= $sogo::sieve_script_header_template_file %>;
+<% } -%>
+<% if $sogo::sieve_script_footer_template_file { -%>
+  SOGoSieveScriptFooterTemplateFile = <%= $sogo::sieve_script_footer_template_file %>;
+<% } -%>
+<% if $sogo::sieve_filters { -%>
+  SOGoSieveFilters = <%= $sogo::sieve_filters.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::refresh_view_intervals { -%>
+  SOGoRefreshViewIntervals = <%= $sogo::refresh_view_intervals.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::refresh_view_check { -%>
+  SOGoRefreshViewCheck = <%= $sogo::refresh_view_check %>;
+<% } -%>
+<% if $sogo::mail_auxiliary_user_accounts_enabled != undef { -%>
+  SOGoMailAuxiliaryUserAccountsEnabled = <%= $sogo::mail_auxiliary_user_accounts_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::default_calendar { -%>
+  SOGoDefaultCalendar = <%= $sogo::default_calendar %>;
+<% } -%>
+<% if $sogo::day_start_time { -%>
+  SOGoDayStartTime = <%= $sogo::day_start_time %>;
+<% } -%>
+<% if $sogo::day_end_time { -%>
+  SOGoDayEndTime = <%= $sogo::day_end_time %>;
+<% } -%>
+<% if $sogo::first_day_of_week { -%>
+  SOGoFirstDayOfWeek = <%= $sogo::first_day_of_week %>;
+<% } -%>
+<% if $sogo::first_week_of_year { -%>
+  SOGoFirstWeekOfYear = <%= $sogo::first_week_of_year %>;
+<% } -%>
+<% if $sogo::time_format { -%>
+  SOGoTimeFormat = <%= $sogo::time_format.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::calendar_categories { -%>
+  SOGoCalendarCategories = <%= $sogo::calendar_categories.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::calendar_categories_colors { -%>
+  SOGoCalendarCategoriesColors = <%= $sogo::calendar_categories_colors.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::calendar_events_default_classification { -%>
+  SOGoCalendarEventsDefaultClassification = <%= $sogo::calendar_events_default_classification %>;
+<% } -%>
+<% if $sogo::calendar_tasks_default_classification { -%>
+  SOGoCalendarTasksDefaultClassification = <%= $sogo::calendar_tasks_default_classification %>;
+<% } -%>
+<% if $sogo::calendar_default_reminder { -%>
+  SOGoCalendarDefaultReminder = <%= $sogo::calendar_default_reminder %>;
+<% } -%>
+<% if $sogo::free_busy_default_interval { -%>
+  SOGoFreeBusyDefaultInterval = <%= $sogo::free_busy_default_interval.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::dav_calendar_start_time_limit { -%>
+  SOGoDAVCalendarStartTimeLimit = <%= $sogo::dav_calendar_start_time_limit %>;
+<% } -%>
+<% if $sogo::busy_off_hours != undef { -%>
+  SOGoBusyOffHours = <%= $sogo::busy_off_hours.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_message_forwarding { -%>
+  SOGoMailMessageForwarding = <%= $sogo::mail_message_forwarding %>;
+<% } -%>
+<% if $sogo::mail_reply_placement { -%>
+  SOGoMailReplyPlacement = <%= $sogo::mail_reply_placement %>;
+<% } -%>
+<% if $sogo::mail_signature_placement { -%>
+  SOGoMailSignaturePlacement = <%= $sogo::mail_signature_placement %>;
+<% } -%>
+<% if $sogo::mail_use_signature_on_new != undef { -%>
+  SOGoMailUseSignatureOnNew = <%= $sogo::mail_use_signature_on_new.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_use_signature_on_reply != undef { -%>
+  SOGoMailUseSignatureOnReply = <%= $sogo::mail_use_signature_on_reply.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_use_signature_on_forward != undef { -%>
+  SOGoMailUseSignatureOnForward = <%= $sogo::mail_use_signature_on_forward.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_compose_message_type { -%>
+  SOGoMailComposeMessageType = <%= $sogo::mail_compose_message_type %>;
+<% } -%>
+<% if $sogo::mail_compose_window { -%>
+  SOGoMailComposeWindow = <%= $sogo::mail_compose_window %>;
+<% } -%>
+<% if $sogo::enable_email_alarms != undef { -%>
+  SOGoEnableEMailAlarms = <%= $sogo::enable_email_alarms.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::contacts_categories { -%>
+  SOGoContactsCategories = <%= $sogo::contacts_categories.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::ui_additional_js_files { -%>
+  SOGoUIAdditionalJSFiles = <%= $sogo::ui_additional_js_files.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_custom_from_enabled != undef { -%>
+  SOGoMailCustomFromEnabled = <%= $sogo::mail_custom_from_enabled.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::subscription_folder_format { -%>
+  SOGoSubscriptionFolderFormat = <%= $sogo::subscription_folder_format.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::uix_additional_preferences { -%>
+  SOGoUIxAdditionalPreferences = <%= $sogo::uix_additional_preferences.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_junk_settings { -%>
+  SOGoMailJunkSettings = <%= $sogo::mail_junk_settings.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::mail_keep_drafts_after_send != undef { -%>
+  SOGoMailKeepDraftsAfterSend = <%= $sogo::mail_keep_drafts_after_send.sogo::to_plist %>;
+<% } -%>
+
+  /* Multi-domains Configuration */
+<% if $sogo::enable_domain_based_uid != undef { -%>
+  SOGoEnableDomainBasedUID = <%= $sogo::enable_domain_based_uid.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::login_domains { -%>
+  SOGoLoginDomains = <%= $sogo::login_domains.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::domains_visibility { -%>
+  SOGoDomainsVisibility = <%= $sogo::domains_visibility.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::domains { -%>
+  domains = <%= $sogo::domains.sogo::to_plist %>;
+<% } -%>
+
   /* Debug */
   //SOGoDebugRequests = YES;
   //SoDebugBaseURL = YES;
@@ -194,5 +505,4 @@
   //MySQL4DebugEnabled = YES;
   //SOGoUIxDebugEnabled = YES;
   //WODontZipResponse = YES;
-  //WOLogFile = /var/log/sogo/sogo.log;
 }
