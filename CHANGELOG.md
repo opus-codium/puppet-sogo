@@ -4,7 +4,15 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v4.0.0](https://github.com/opus-codium/puppet-sogo/tree/v4.0.0) (2023-07-30)
+## [v5.0.0](https://github.com/opus-codium/puppet-sogo/tree/v5.0.0) (2023-10-30)
+
+[Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/v4.0.0...v5.0.0)
+
+**Breaking changes:**
+
+- Sync available settings with upstream [\#47](https://github.com/opus-codium/puppet-sogo/pull/47) ([smortex](https://github.com/smortex))
+
+## [v4.0.0](https://github.com/opus-codium/puppet-sogo/tree/v4.0.0) (2023-08-07)
 
 [Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/v3.1.0...v4.0.0)
 
