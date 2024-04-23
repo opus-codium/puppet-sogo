@@ -1569,6 +1569,9 @@ Alias of `Enum['ObjectViewer', 'ObjectEditor', 'ObjectCreator', 'ObjectEraser']`
 
 Describe a SOGo domain
 
+* **See also**
+  * https://www.sogo.nu/files/docs/SOGoInstallationGuide.html
+
 Alias of
 
 ```puppet
@@ -1593,7 +1596,7 @@ Struct[{
     Optional[create_identities_disabled]             => Boolean,
 
     # Authentication using LDAP
-    Optional[ldap_contact_info_attribute]            => String[1],
+    # ldap_contact_info_attribute (duplicate entry, kept to match documentation)
     Optional[ldap_query_limit]                       => String[1],
     Optional[ldap_query_timeout]                     => Integer[0],
     Optional[ldap_group_expansion_enabled]           => Boolean,

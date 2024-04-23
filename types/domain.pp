@@ -1,4 +1,6 @@
 # @summary Describe a SOGo domain
+#
+# @see https://www.sogo.nu/files/docs/SOGoInstallationGuide.html
 type Sogo::Domain = Struct[
   {
     # General Preferences
@@ -21,7 +23,7 @@ type Sogo::Domain = Struct[
     Optional[create_identities_disabled]             => Boolean,
 
     # Authentication using LDAP
-    Optional[ldap_contact_info_attribute]            => String[1],
+    # ldap_contact_info_attribute (duplicate entry, kept to match documentation)
     Optional[ldap_query_limit]                       => String[1],
     Optional[ldap_query_timeout]                     => Integer[0],
     Optional[ldap_group_expansion_enabled]           => Boolean,
