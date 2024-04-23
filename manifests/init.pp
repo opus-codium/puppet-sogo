@@ -11,10 +11,17 @@
 # @param configuration_file Path to SOGo configuration file
 # @param package Package name
 # @param service Ensure parameter for the SOGo package
+# @param configuration_group Group of the SOGo configuration file
+# @param configuration_owner User of the SOGo configuration file
+# @param configuration_mode Permissions of the SOGo configuration file
 class sogo (
   String[1]               $configuration_file,
   String[1]               $package,
   String[1]               $service,
+
+  String[1]               $configuration_group,
+  String[1]               $configuration_owner = 'root',
+  Stdlib::Filemode        $configuration_mode = '0640',
 
   # General settings
 
