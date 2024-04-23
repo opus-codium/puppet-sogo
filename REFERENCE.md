@@ -55,6 +55,9 @@ The following parameters are available in the `sogo` class:
 * [`configuration_file`](#-sogo--configuration_file)
 * [`package`](#-sogo--package)
 * [`service`](#-sogo--service)
+* [`configuration_group`](#-sogo--configuration_group)
+* [`configuration_owner`](#-sogo--configuration_owner)
+* [`configuration_mode`](#-sogo--configuration_mode)
 * [`workers_count`](#-sogo--workers_count)
 * [`listen_queue_size`](#-sogo--listen_queue_size)
 * [`port`](#-sogo--port)
@@ -288,6 +291,28 @@ Package name
 Data type: `String[1]`
 
 Ensure parameter for the SOGo package
+
+##### <a name="-sogo--configuration_group"></a>`configuration_group`
+
+Data type: `String[1]`
+
+Group of the SOGo configuration file
+
+##### <a name="-sogo--configuration_owner"></a>`configuration_owner`
+
+Data type: `String[1]`
+
+User of the SOGo configuration file
+
+Default value: `'root'`
+
+##### <a name="-sogo--configuration_mode"></a>`configuration_mode`
+
+Data type: `Stdlib::Filemode`
+
+Permissions of the SOGo configuration file
+
+Default value: `'0640'`
 
 ##### <a name="-sogo--workers_count"></a>`workers_count`
 

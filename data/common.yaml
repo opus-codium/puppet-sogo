@@ -1,3 +1,4 @@
 sogo::configuration_file: '/etc/sogo/sogo.conf'
+sogo::configuration_group: 'sogo'
 sogo::package: 'sogo'
 sogo::service: 'sogo'
