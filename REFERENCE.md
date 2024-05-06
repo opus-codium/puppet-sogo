@@ -114,11 +114,18 @@ The following parameters are available in the `sogo` class:
 * [`password_recovery_domains`](#-sogo--password_recovery_domains)
 * [`jwt_secret`](#-sogo--jwt_secret)
 * [`create_identities_disabled`](#-sogo--create_identities_disabled)
+* [`url_encryption_enabled`](#-sogo--url_encryption_enabled)
+* [`url_encryption_passphrase`](#-sogo--url_encryption_passphrase)
+* [`global_address_book_first_entries`](#-sogo--global_address_book_first_entries)
+* [`global_address_book_first_entries_count`](#-sogo--global_address_book_first_entries_count)
+* [`secret_type`](#-sogo--secret_type)
+* [`secret_value`](#-sogo--secret_value)
 * [`email_alarms_folder_url`](#-sogo--email_alarms_folder_url)
 * [`disable_organizer_event_check`](#-sogo--disable_organizer_event_check)
 * [`store_url`](#-sogo--store_url)
 * [`acl_url`](#-sogo--acl_url)
 * [`cache_folder_url`](#-sogo--cache_folder_url)
+* [`admin_url`](#-sogo--admin_url)
 * [`ldap_contact_info_attribute`](#-sogo--ldap_contact_info_attribute)
 * [`ldap_query_limit`](#-sogo--ldap_query_limit)
 * [`ldap_query_timeout`](#-sogo--ldap_query_timeout)
@@ -762,6 +769,54 @@ Data type: `Optional[Boolean]`
 
 Default value: `undef`
 
+##### <a name="-sogo--url_encryption_enabled"></a>`url_encryption_enabled`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--url_encryption_passphrase"></a>`url_encryption_passphrase`
+
+Data type: `Optional[Sensitive[String[1]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--global_address_book_first_entries"></a>`global_address_book_first_entries`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--global_address_book_first_entries_count"></a>`global_address_book_first_entries_count`
+
+Data type: `Optional[Integer[0]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--secret_type"></a>`secret_type`
+
+Data type: `Optional[Enum['plain', 'env', 'none']]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--secret_value"></a>`secret_value`
+
+Data type: `Optional[Variant[String[1], Sensitive[String[1]]]]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-sogo--email_alarms_folder_url"></a>`email_alarms_folder_url`
 
 Data type: `Optional[String[1]]`
@@ -795,6 +850,14 @@ Data type: `Optional[String[1]]`
 Default value: `undef`
 
 ##### <a name="-sogo--cache_folder_url"></a>`cache_folder_url`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-sogo--admin_url"></a>`admin_url`
 
 Data type: `Optional[String[1]]`
 
