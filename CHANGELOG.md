@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.1.0](https://github.com/opus-codium/puppet-sogo/tree/v5.1.0) (2024-05-17)
+
+[Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/v5.0.0...v5.1.0)
+
+**Implemented enhancements:**
+
+- Add new settings for SOGo 5.10 [\#51](https://github.com/opus-codium/puppet-sogo/pull/51) ([smortex](https://github.com/smortex))
+- Manage configuration file ownership and mode [\#49](https://github.com/opus-codium/puppet-sogo/pull/49) ([smortex](https://github.com/smortex))
+
+**Fixed bugs:**
+
+- Remove duplicate key from configuration Hash [\#50](https://github.com/opus-codium/puppet-sogo/pull/50) ([smortex](https://github.com/smortex))
+
 ## [v5.0.0](https://github.com/opus-codium/puppet-sogo/tree/v5.0.0) (2023-10-30)
 
 [Full Changelog](https://github.com/opus-codium/puppet-sogo/compare/v4.0.0...v5.0.0)
