@@ -114,6 +114,14 @@ class sogo (
   # D
   Optional[Boolean] $create_identities_disabled = undef,
 
+  # S
+  Optional[Boolean] $url_encryption_enabled = undef,
+  Optional[Sensitive[String[1]]] $url_encryption_passphrase = undef,
+  Optional[Boolean] $global_address_book_first_entries = undef,
+  Optional[Integer[0]] $global_address_book_first_entries_count = undef,
+  Optional[Enum['plain', 'env', 'none']] $secret_type = undef,
+  Optional[Variant[String[1], Sensitive[String[1]]]] $secret_value = undef,
+
   # Database Configuration
   Optional[String[1]] $profile_url = undef,
   Optional[String[1]] $folder_info_url = undef,
@@ -123,6 +131,7 @@ class sogo (
   Optional[String[1]] $store_url = undef,
   Optional[String[1]] $acl_url = undef,
   Optional[String[1]] $cache_folder_url = undef,
+  Optional[String[1]] $admin_url = undef,
 
   # Authentication using LDAP
   Optional[String[1]]  $ldap_contact_info_attribute = undef,

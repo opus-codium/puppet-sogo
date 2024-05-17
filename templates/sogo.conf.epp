@@ -183,6 +183,24 @@
 <% if $sogo::create_identities_disabled != undef { -%>
   SOGoCreateIdentitiesDisabled = <%= $sogo::create_identities_disabled.bool2str('YES', 'NO') %>;
 <% } -%>
+<% if $sogo::url_encryption_enabled != undef { -%>
+  SOGoURLEncryptionEnabled = <%= $sogo::url_encryption_enabled.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::url_encryption_passphrase { -%>
+  SOGoURLEncryptionPassphrase = <%= Sensitive($sogo::url_encryption_passphrase.sogo::to_plist) %>;
+<% } -%>
+<% if $sogo::global_address_book_first_entries != undef { -%>
+  SOGoGlobalAddressBookFirstEntries = <%= $sogo::global_address_book_first_entries.bool2str('YES', 'NO') %>;
+<% } -%>
+<% if $sogo::global_address_book_first_entries_count { -%>
+  SOGoGlobalAddressBookFirstEntriesCount = <%= $sogo::global_address_book_first_entries_count %>;
+<% } -%>
+<% if $sogo::secret_type { -%>
+  SOGoSecretType = <%= $sogo::secret_type.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::secret_value { -%>
+  SOGoSecretValue = <%= Sensitive($sogo::secret_value.sogo::to_plist) %>;
+<% } -%>
 
   /* Database Configuration */
 <% if $sogo::profile_url { -%>
@@ -208,6 +226,9 @@
 <% } -%>
 <% if $sogo::cache_folder_url { -%>
   OCSCacheFolderURL = <%= $sogo::cache_folder_url.sogo::to_plist %>;
+<% } -%>
+<% if $sogo::admin_url { -%>
+  OCSAdminURL = <%= $sogo::admin_url.sogo::to_plist %>;
 <% } -%>
 
   /* Authentication using LDAP */

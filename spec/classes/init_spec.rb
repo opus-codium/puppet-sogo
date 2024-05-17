@@ -193,6 +193,12 @@ describe 'sogo' do
             'password_recovery_domains' => ['example.com'],
             'jwt_secret' => sensitive('secret'),
             'create_identities_disabled' => true,
+            'url_encryption_enabled' => true,
+            'url_encryption_passphrase' => sensitive('this is a secret'),
+            'global_address_book_first_entries' => true,
+            'global_address_book_first_entries_count' => 10,
+            'secret_type' => 'env',
+            'secret_value' => 'SOGO_SECRET',
 
             # Authentication using LDAP
             'ldap_contact_info_attribute' => 'comment',
@@ -208,6 +214,7 @@ describe 'sogo' do
             'store_url' => 'postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_store',
             'acl_url' => 'postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_acl',
             'cache_folder_url' => 'postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_cache_folder',
+            'admin_url' => 'postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_admin',
 
             'mailing_mechanism' => 'smtp',
             'smtp_server' => 'smtp://localhost:587/?tls=YES&tlsVerifyMode=allowInsecureLocalhost',
@@ -620,6 +627,12 @@ describe 'sogo' do
               );
               SOGoJWTSecret = "secret";
               SOGoCreateIdentitiesDisabled = YES;
+              SOGoURLEncryptionEnabled = YES;
+              SOGoURLEncryptionPassphrase = "this is a secret";
+              SOGoGlobalAddressBookFirstEntries = YES;
+              SOGoGlobalAddressBookFirstEntriesCount = 10;
+              SOGoSecretType = "env";
+              SOGoSecretValue = "SOGO_SECRET";
 
               /* Database Configuration */
               SOGoProfileURL = "mysql://sogo:sogo@127.0.0.1:3306/sogo/sogo_user_profile";
@@ -630,6 +643,7 @@ describe 'sogo' do
               OCSStoreURL = "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_store";
               OCSAclURL = "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_acl";
               OCSCacheFolderURL = "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_cache_folder";
+              OCSAdminURL = "postgresql://sogo:sogo@127.0.0.1:5432/sogo/sogo_admin";
 
               /* Authentication using LDAP */
               SOGoLDAPContactInfoAttribute = "comment";
